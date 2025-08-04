@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SteamTools</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="fav.ico" type="image/x-icon" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Installation SteamTools</h1>
+      <p class="subtitle">Obtenez la dernière version, rapide et sécurisée</p>
+    </header>
+
+    <div class="file-info">
+      <div class="file-icon">
+        <img src="fav.ico" alt="Icône du fichier" />
+      </div>
+      <div class="file-details">
+        <div class="file-name">SteamTools v2.8</div>
+        <div class="file-meta">
+          <span><i class="fas fa-weight-hanging"></i> 10.7 MB</span> &nbsp;|&nbsp;
+          <span><i class="fas fa-calendar-alt"></i> 04-08-2025</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="download-options">
+      <a href="#" class="download-button" id="local-download">
+        <i class="fas fa-download download-icon"></i>Télécharger la version installable
+      </a>
+      <a href="https://st.ayka.dev/v/SteamToolsV2.8.exe" class="download-button mirror-button">
+        <i class="fas fa-cloud-download-alt download-icon"></i>Lien miroir
+      </a>
+    </div>
+
+    <div class="old-versions">
+      <h2>Anciennes versions</h2>
+      <a href="https://api.ayka.dev/SteamTools/SteamToolsV2.7.exe" class="old-download-button">
+        <i class="fas fa-download"></i> SteamTools v2.7 (10.7 MB)
+      </a>
+      <a href="https://api.ayka.dev/SteamTools/SteamToolsV2.5.exe" class="old-download-button">
+        <i class="fas fa-download"></i> SteamTools v2.5 (10.7 MB)
+      </a>
+      <a href="https://api.ayka.dev/SteamTools/SteamTools%20V2.exe" class="old-download-button">
+        <i class="fas fa-download"></i> SteamTools v2 (9.15 MB)
+      </a>
+    </div>
+
+    <footer>
+      <p>©2025 SteamTools</p>
+    </footer>
+  </div>
+
+  <script type="text/javascript">
+    document.getElementById('local-download').addEventListener('click', function(e) {
+      e.preventDefault();
+      this.innerHTML = '<i class="fas fa-spinner fa-spin download-icon"></i>Téléchargement en cours...';
+
+      setTimeout(() => {
+        window.location.href = 'https://api.ayka.dev/SteamTools/SteamToolsV2.8.exe';
+
+        this.innerHTML = '<i class="fas fa-check-circle download-icon"></i>Téléchargement terminé';
+
+        setTimeout(() => {
+          this.innerHTML = '<i class="fas fa-download download-icon"></i>Télécharger la version installable';
+        }, 2000);
+      }, 800);
+    });
+  </script>
+</body>
+</html>

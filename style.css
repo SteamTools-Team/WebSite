@@ -1,0 +1,233 @@
+    :root {
+      --bg-main: #121212;
+      --bg-container: #1e1e2f;
+      --text-primary: #e0e0f0;
+      --text-secondary: #a0a0b8;
+      --violet-primary: #8c7ae6;
+      --violet-hover: #a899f9;
+      --border-color: #2a2a45;
+      --btn-bg: var(--violet-primary);
+      --btn-bg-hover: var(--violet-hover);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 90%;
+      background-color: var(--bg-container);
+      padding: 40px;
+      border-radius: 30px;
+      box-shadow: 0 4px 16px rgba(140, 122, 230, 0.3);
+      border: 1px solid var(--border-color);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .back-button {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--violet-primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s ease;
+    }
+    .back-button:hover {
+      color: var(--violet-hover);
+    }
+    .back-button i {
+      margin-right: 6px;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .file-info {
+      display: flex;
+      align-items: center;
+      background: #29294b;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 30px 0;
+      border: 1px solid var(--border-color);
+    }
+
+    .file-icon {
+      width: 48px;
+      height: 48px;
+      margin-right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .file-icon img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 6px var(--violet-primary));
+    }
+
+    .file-details {
+      flex: 1;
+    }
+
+    .file-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 5px;
+    }
+
+    .file-meta {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .download-options {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .download-button {
+      background: var(--btn-bg);
+      color: white;
+      padding: 14px 22px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      border: none;
+      box-shadow: 0 4px 10px rgba(140, 122, 230, 0.4);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .download-button:hover {
+      background: var(--btn-bg-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(168, 153, 249, 0.6);
+    }
+
+    .mirror-button {
+      background: transparent;
+      border: 2px solid var(--btn-bg);
+      color: var(--btn-bg);
+      font-weight: 600;
+    }
+    .mirror-button:hover {
+      background: var(--btn-bg-hover);
+      color: white;
+      border-color: var(--btn-bg-hover);
+    }
+
+    .download-icon {
+      font-size: 1.2rem;
+    }
+
+    .old-versions {
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
+      text-align: center;
+    }
+    .old-versions h2 {
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    .old-download-button {
+      background: transparent;
+      border: 2px solid var(--btn-bg);
+      color: var(--btn-bg);
+      padding: 8px 14px;
+      margin: 6px 4px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .old-download-button:hover {
+      background: var(--btn-bg-hover);
+      color: white;
+      border-color: var(--btn-bg-hover);
+      box-shadow: 0 6px 15px rgba(168, 153, 249, 0.6);
+    }
+
+    footer {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 30px 20px;
+      }
+      .back-button {
+        position: static;
+        transform: none;
+        margin-bottom: 24px;
+        display: inline-flex;
+      }
+      .file-icon img {
+        width: 40px;
+        height: 40px;
+      }
+      .download-button {
+        padding: 12px 18px;
+        font-size: 0.95rem;
+      }
+      .old-download-button {
+        padding: 7px 12px;
+        font-size: 0.85rem;
+      }
+    }
