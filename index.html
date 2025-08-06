@@ -3,85 +3,300 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SteamTools</title>
+  <title>SteamTools - Téléchargement</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="fav.ico" type="image/x-icon" />
-
-  <meta property="og:title" content="SteamTools - Installation rapide et sécurisée" />
-  <meta property="og:description" content="Télécharge la dernière version de SteamTools, l’outil incontournable pour les passionnés de jeux." />
-  <meta property="og:url" content="https://steamtools.ayka.dev" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="SteamTools" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="SteamTools - Installation rapide et sécurisée" />
-  <meta name="twitter:description" content="Télécharge la dernière version de SteamTools, l’outil incontournable pour les passionnés de jeux." />
+  
+  <!-- Font Awesome pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Meta tags SEO et réseaux sociaux -->
+  <meta name="description" content="Téléchargez SteamTools - L'outil ultime pour les passionnés de jeux Steam. Installation rapide, sécurisée et gratuite.">
+  <meta name="keywords" content="SteamTools, Steam, jeux, téléchargement, gaming, outils">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Installation SteamTools</h1>
-      <p class="subtitle">Obtenez la dernière version, rapide et sécurisée</p>
+      <a href="/" class="back-button">
+        <i class="fas fa-arrow-left"></i> Retour
+      </a>
+      <h1>SteamTools</h1>
+      <p class="subtitle">Installation rapide et sécurisée</p>
+      <div class="stats-info">
+        <i class="fas fa-gamepad"></i>
+        <span id="games-count">Chargement...</span> jeux disponibles
+      </div>
     </header>
 
     <div class="file-info">
       <div class="file-icon">
-        <img src="fav.ico" alt="Icône du fichier" />
+        <img src="fav.ico" alt="Icône SteamTools" />
       </div>
       <div class="file-details">
         <div class="file-name">SteamTools</div>
         <div class="file-meta">
-          <span><i class="fas fa-weight-hanging"></i> 10.8 MB</span> &nbsp;|&nbsp;
+          <span><i class="fas fa-weight-hanging"></i> 10.8 MB</span>
           <span><i class="fas fa-calendar-alt"></i> 07-08-2025</span>
+          <span><i class="fas fa-shield-alt"></i> Sécurisé</span>
         </div>
       </div>
     </div>
 
     <div class="download-options">
-      <a href="#" class="download-button" id="local-download">
-        <i class="fas fa-download download-icon"></i>Télécharger la version installable
-      </a>
-      <a href="https://steamtools.ayka.dev/v/SteamTools.exe" class="download-button mirror-button">
-        <i class="fas fa-cloud-download-alt download-icon"></i>Lien miroir
+      <button class="download-button" id="local-download">
+        <i class="fas fa-download download-icon"></i>
+        Télécharger la version installable
+      </button>
+      <a href="https://steamtools.ayka.dev/v/SteamTools.exe" class="download-button mirror-button" target="_blank" rel="noopener">
+        <i class="fas fa-cloud-download-alt download-icon"></i>
+        Lien miroir de sauvegarde
       </a>
     </div>
 
     <div class="old-versions">
-      <h2>Anciennes versions</h2>
-      <a href="https://api.ayka.dev/SteamTools/SteamToolsV2.9.exe" class="old-download-button">
-        <i class="fas fa-download"></i> SteamTools v2.9 (10.7 MB)
-      </a>
-      <a href="https://api.ayka.dev/SteamTools/SteamToolsV2.8.exe" class="old-download-button">
-        <i class="fas fa-download"></i> SteamTools v2.8 (10.7 MB)
-      </a>
-      <a href="https://api.ayka.dev/SteamTools/SteamToolsV2.5.exe" class="old-download-button">
-        <i class="fas fa-download"></i> SteamTools v2.5 (10.7 MB)
-      </a>
-      <a href="https://api.ayka.dev/SteamTools/SteamTools%20V2.exe" class="old-download-button">
-        <i class="fas fa-download"></i> SteamTools v2 (9.15 MB)
-      </a>
+      <h2><i class="fas fa-history"></i> Anciennes versions</h2>
+      <div class="old-versions-grid">
+        <a href="https://api.ayka.dev/SteamTools/SteamToolsV2.9.exe" class="old-download-button" target="_blank" rel="noopener">
+          <i class="fas fa-download"></i> v2.9 (10.7 MB)
+        </a>
+        <a href="https://api.ayka.dev/SteamTools/SteamToolsV2.8.exe" class="old-download-button" target="_blank" rel="noopener">
+          <i class="fas fa-download"></i> v2.8 (10.7 MB)
+        </a>
+        <a href="https://api.ayka.dev/SteamTools/SteamToolsV2.5.exe" class="old-download-button" target="_blank" rel="noopener">
+          <i class="fas fa-download"></i> v2.5 (10.7 MB)
+        </a>
+        <a href="https://api.ayka.dev/SteamTools/SteamTools%20V2.exe" class="old-download-button" target="_blank" rel="noopener">
+          <i class="fas fa-download"></i> v2.0 (9.15 MB)
+        </a>
+      </div>
     </div>
 
     <footer>
-      <p>©2025 SteamTools</p>
+      <p>© 2025 SteamTools - Développé par <strong>Ayka</strong></p>
+      <p style="margin-top: 8px; font-size: 0.8rem;">
+        <i class="fas fa-lock"></i> Téléchargement sécurisé et vérifié
+      </p>
     </footer>
   </div>
 
-  <script type="text/javascript">
+  <script>
+    // 🎯 FONCTION PRINCIPALE - Détecter automatiquement les jeux
+    async function detectGamesCount() {
+      const gamesCountElement = document.getElementById('games-count');
+      gamesCountElement.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+      
+      console.log('🔍 Début de la détection automatique des jeux...');
+      
+      try {
+        // 📦 MÉTHODE 1: GitHub Contents API (recommandée)
+        const count1 = await scanWithContentsAPI();
+        if (count1 > 0) {
+          console.log(`✅ Contents API: ${count1} fichiers ZIP trouvés`);
+          displayCount(count1);
+          return;
+        }
+
+        // 🌳 MÉTHODE 2: GitHub Tree API (recursive)
+        const count2 = await scanWithTreeAPI();
+        if (count2 > 0) {
+          console.log(`✅ Tree API: ${count2} fichiers ZIP trouvés`);
+          displayCount(count2);
+          return;
+        }
+
+        // 🔎 MÉTHODE 3: GitHub Search API
+        const count3 = await scanWithSearchAPI();
+        if (count3 > 0) {
+          console.log(`✅ Search API: ${count3} fichiers ZIP trouvés`);
+          displayCount(count3);
+          return;
+        }
+
+        // ❌ FALLBACK: Aucune méthode n'a fonctionné
+        throw new Error('Toutes les méthodes de détection ont échoué');
+
+      } catch (error) {
+        console.error('❌ Erreur de détection:', error);
+        gamesCountElement.textContent = '500+';
+        gamesCountElement.style.opacity = '0.7';
+      }
+    }
+
+    // 📦 MÉTHODE 1: Scan avec Contents API
+    async function scanWithContentsAPI() {
+      try {
+        const folders = ['', 'games', 'jeux', 'downloads', 'zips', 'files'];
+        let totalCount = 0;
+        
+        for (const folder of folders) {
+          const url = folder 
+            ? `https://api.github.com/repos/ayka-667/SteamTools-WebSite/contents/${folder}`
+            : 'https://api.github.com/repos/ayka-667/SteamTools-WebSite/contents';
+            
+          try {
+            const response = await fetch(url);
+            if (response.ok) {
+              const data = await response.json();
+              if (Array.isArray(data)) {
+                const zipFiles = data.filter(file => 
+                  file.type === 'file' && 
+                  file.name.toLowerCase().endsWith('.zip')
+                );
+                totalCount += zipFiles.length;
+                
+                if (zipFiles.length > 0) {
+                  console.log(`📁 ${folder || 'racine'}: ${zipFiles.length} fichiers ZIP`);
+                  zipFiles.forEach(file => console.log(`  • ${file.name}`));
+                }
+              }
+            }
+          } catch (folderError) {
+            console.warn(`⚠️ Dossier "${folder}" inaccessible:`, folderError.message);
+          }
+        }
+        
+        return totalCount;
+      } catch (error) {
+        console.error('❌ Contents API failed:', error);
+        return 0;
+      }
+    }
+
+    // 🌳 MÉTHODE 2: Scan avec Tree API
+    async function scanWithTreeAPI() {
+      try {
+        // Récupérer les infos du repo
+        const repoResponse = await fetch('https://api.github.com/repos/ayka-667/SteamTools-WebSite');
+        if (!repoResponse.ok) throw new Error('Repo inaccessible');
+        
+        const repoData = await repoResponse.json();
+        const branch = repoData.default_branch || 'main';
+        
+        // Récupérer l'arbre complet
+        const treeResponse = await fetch(
+          `https://api.github.com/repos/ayka-667/SteamTools-WebSite/git/trees/${branch}?recursive=1`
+        );
+        
+        if (!treeResponse.ok) throw new Error('Tree API failed');
+        
+        const treeData = await treeResponse.json();
+        
+        // Filtrer les fichiers ZIP
+        const zipFiles = treeData.tree.filter(item => 
+          item.type === 'blob' && 
+          item.path.toLowerCase().endsWith('.zip')
+        );
+        
+        console.log('🌳 Fichiers ZIP trouvés via Tree API:');
+        zipFiles.forEach(file => console.log(`  • ${file.path}`));
+        
+        return zipFiles.length;
+      } catch (error) {
+        console.error('❌ Tree API failed:', error);
+        return 0;
+      }
+    }
+
+    // 🔎 MÉTHODE 3: Scan avec Search API
+    async function scanWithSearchAPI() {
+      try {
+        const response = await fetch(
+          'https://api.github.com/search/code?q=extension:zip+repo:ayka-667/SteamTools-WebSite'
+        );
+        
+        if (!response.ok) throw new Error('Search API failed');
+        
+        const data = await response.json();
+        
+        console.log(`🔎 Search API: ${data.total_count} résultats trouvés`);
+        
+        if (data.items && data.items.length > 0) {
+          console.log('🔎 Fichiers trouvés via Search API:');
+          data.items.forEach(item => console.log(`  • ${item.path}`));
+        }
+        
+        return data.total_count || 0;
+      } catch (error) {
+        console.error('❌ Search API failed:', error);
+        return 0;
+      }
+    }
+
+    // 📊 Afficher le nombre de jeux
+    function displayCount(count) {
+      const gamesCountElement = document.getElementById('games-count');
+      
+      if (count > 0) {
+        // Animation du compteur
+        let currentCount = 0;
+        const increment = Math.ceil(count / 30);
+        
+        const countAnimation = setInterval(() => {
+          currentCount += increment;
+          if (currentCount >= count) {
+            currentCount = count;
+            clearInterval(countAnimation);
+          }
+          gamesCountElement.textContent = currentCount.toLocaleString('fr-FR');
+        }, 50);
+        
+        // Style de succès
+        gamesCountElement.style.color = '#4caf50';
+        setTimeout(() => {
+          gamesCountElement.style.color = '';
+        }, 2000);
+        
+      } else {
+        gamesCountElement.textContent = '500+';
+        gamesCountElement.style.opacity = '0.7';
+      }
+    }
+
+    // 🎮 Gestionnaire de téléchargement
     document.getElementById('local-download').addEventListener('click', function(e) {
       e.preventDefault();
-      this.innerHTML = '<i class="fas fa-spinner fa-spin download-icon"></i>Téléchargement en cours...';
-
+      
+      if (this.classList.contains('downloading')) return;
+      
+      const originalContent = this.innerHTML;
+      
+      this.classList.add('downloading');
+      this.innerHTML = '<div class="loading-spinner"></div> Préparation...';
+      
       setTimeout(() => {
-        window.location.href = 'https://api.ayka.dev/SteamTools/SteamTools.exe';
-
-        this.innerHTML = '<i class="fas fa-check-circle download-icon"></i>Téléchargement terminé';
-
+        this.innerHTML = '<div class="loading-spinner"></div> Téléchargement...';
+        
+        const link = document.createElement('a');
+        link.href = 'https://api.ayka.dev/SteamTools/SteamTools.exe';
+        link.download = 'SteamTools.exe';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
         setTimeout(() => {
-          this.innerHTML = '<i class="fas fa-download download-icon"></i>Télécharger la version installable';
+          this.classList.remove('downloading');
+          this.classList.add('completed');
+          this.innerHTML = '<i class="fas fa-check-circle"></i> Terminé !';
+          
+          setTimeout(() => {
+            this.classList.remove('completed');
+            this.innerHTML = originalContent;
+          }, 3000);
         }, 2000);
-      }, 800);
+      }, 1000);
     });
+
+    // 🚀 Initialisation
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('🎮 SteamTools - Détection automatique des jeux');
+      detectGamesCount();
+    });
+
+    // 🔄 Mise à jour automatique (toutes les 5 minutes)
+    setInterval(() => {
+      console.log('🔄 Mise à jour automatique du compteur...');
+      detectGamesCount();
+    }, 300000);
   </script>
 </body>
 </html>
