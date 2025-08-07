@@ -3,6 +3,18 @@
     {
       "source": "/fr",
       "destination": "/fr.html"
+    },
+    {
+      "source": "/fr/",
+      "destination": "/fr.html"
+    },
+    {
+      "source": "/en",
+      "destination": "/en.html"
+    },
+    {
+      "source": "/en/",
+      "destination": "/en.html"
     }
   ]
 }
