@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redirecting...</title>
+  <meta http-equiv="refresh" content="0;url=en.html">
   <script>
     async function redirectBasedOnLocation() {
       try {
@@ -25,9 +26,24 @@
         window.location.href = 'en';
       }
     }
+
     redirectBasedOnLocation();
   </script>
 </head>
 <body>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+  </style>
+  <div style="color: white;">Redirecting...</div>
 </body>
 </html>
