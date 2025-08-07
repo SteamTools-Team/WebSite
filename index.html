@@ -6,11 +6,7 @@
   <title>SteamTools - Téléchargement</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="fav.ico" type="image/x-icon" />
-  
-  <!-- Font Awesome pour les icônes -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Meta tags SEO -->
   <meta name="description" content="Téléchargez SteamTools - L'outil ultime pour les passionnés de jeux Steam. Installation rapide, sécurisée et gratuite.">
   <meta name="keywords" content="SteamTools, Steam, jeux, téléchargement, gaming, outils">
 </head>
@@ -80,15 +76,12 @@
   </div>
 
   <script>
-    // 🎯 SOLUTION SIMPLE - Utiliser votre propre API
     async function getGamesCount() {
       const gamesCountElement = document.getElementById('games-count');
       gamesCountElement.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
       
       try {
         console.log('🔍 Récupération du compteur depuis api.ayka.dev...');
-        
-        // 🚀 MÉTHODE 1: Votre API personnalisée (recommandée)
         const response = await fetch('https://api.ayka.dev/steamtools/games-count', {
           method: 'GET',
           headers: {
@@ -105,7 +98,6 @@
           }
         }
         
-        // 🔄 MÉTHODE 2: Fallback avec GitHub simple
         const githubCount = await getGitHubCount();
         if (githubCount > 0) {
           console.log(`✅ GitHub simple: ${githubCount} jeux trouvés`);
@@ -113,9 +105,8 @@
           return;
         }
         
-        // ⚠️ MÉTHODE 3: Fallback manuel
         console.log('⚠️ Utilisation du fallback manuel');
-        animateCounter(487); // Votre nombre actuel estimé
+        animateCounter(487);
         
       } catch (error) {
         console.error('❌ Toutes les méthodes ont échoué:', error);
@@ -124,10 +115,8 @@
       }
     }
 
-    // 🔄 Méthode GitHub simplifiée
     async function getGitHubCount() {
       try {
-        // Test simple: vérifier si le repo est accessible
         const response = await fetch('https://api.github.com/repos/ayka-667/SteamTools-WebSite', {
           headers: {
             'Accept': 'application/vnd.github.v3+json'
@@ -141,7 +130,6 @@
         const repoData = await response.json();
         console.log('📁 Repository accessible:', repoData.name);
         
-        // Essayer de lire le contenu de base
         const contentsResponse = await fetch(`https://api.github.com/repos/ayka-667/SteamTools-WebSite/contents`);
         
         if (contentsResponse.ok) {
@@ -162,7 +150,6 @@
       }
     }
 
-    // 📊 Animation du compteur
     function animateCounter(targetCount) {
       const gamesCountElement = document.getElementById('games-count');
       let currentCount = 0;
@@ -177,14 +164,12 @@
         gamesCountElement.textContent = currentCount.toLocaleString('fr-FR');
       }, 60);
       
-      // Effet visuel de succès
       gamesCountElement.style.color = '#4caf50';
       setTimeout(() => {
         gamesCountElement.style.color = '';
       }, 2000);
     }
 
-    // 🎮 Gestionnaire de téléchargement
     document.getElementById('local-download').addEventListener('click', function(e) {
       e.preventDefault();
       
@@ -218,13 +203,11 @@
       }, 1000);
     });
 
-    // 🚀 Initialisation
     document.addEventListener('DOMContentLoaded', function() {
       console.log('🎮 SteamTools - Chargement du compteur de jeux');
       getGamesCount();
     });
 
-    // 🔄 Mise à jour automatique (toutes les 10 minutes)
     setInterval(() => {
       console.log('🔄 Mise à jour du compteur...');
       getGamesCount();
