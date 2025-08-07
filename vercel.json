@@ -1,8 +1,16 @@
 {
   "rewrites": [
     {
+      "source": "/fr.html",
+      "destination": "/fr"
+    },
+    {
       "source": "/fr",
       "destination": "/fr.html"
+    },
+    {
+      "source": "/en.html",
+      "destination": "/fr"
     },
     {
       "source": "/en",
