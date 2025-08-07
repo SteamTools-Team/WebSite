@@ -7,10 +7,6 @@
     {
       "source": "/en",
       "destination": "/en.html"
-    },
-    {
-      "source": "/discord",
-      "destination": "https://discord.gg/BQKnxfv3pX"
     }
   ],
   "error": {
