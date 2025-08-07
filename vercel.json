@@ -9,7 +9,4 @@
       "destination": "/en.html"
     }
   ],
-  "error": {
-    "404": "/404.html"
-  }
 }
