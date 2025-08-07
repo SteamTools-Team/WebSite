@@ -4,30 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redirecting...</title>
-  <meta http-equiv="refresh" content="0;url=en.html">
   <script>
-    async function redirectBasedOnLocation() {
-      try {
-        const response = await fetch('https://ipapi.co/country/');
-        const country = await response.text();
-
-        if (country) {
-          console.log(`User is in ${country}`);
-          if (country.toLowerCase() === 'fr') {
-            window.location.href = 'fr';
-          } else {
-            window.location.href = 'en';
-          }
-        } else {
-          window.location.href = 'en';
-        }
-      } catch (error) {
-        console.error('Error fetching location:', error);
-        window.location.href = 'en';
+    function redirectImmediately() {
+      var userLang = navigator.language || navigator.userLanguage;
+      if (userLang && userLang.startsWith('fr')) {
+        window.location.href = '/fr';
+        return;
       }
+      fetch('https://ipapi.co/country/')
+        .then(response => response.text())
+        .then(country => {
+          if (country.toLowerCase() === 'fr') {
+            window.location.href = '/fr';
+          } else {
+            window.location.href = '/en';
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching location:', error);
+          window.location.href = '/en';
+        });
     }
 
-    redirectBasedOnLocation();
+    redirectImmediately();
   </script>
 </head>
 <body>
@@ -36,14 +35,9 @@
       margin: 0;
       padding: 0;
       background-color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: white;
+      font-size: 0;
+      overflow: hidden;
     }
   </style>
-  <div style="color: white;">Redirecting...</div>
 </body>
 </html>
