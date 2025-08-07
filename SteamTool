@@ -43,7 +43,7 @@
         <i class="fas fa-download download-icon"></i>
         Télécharger la version installable
       </button>
-      <a href="https://steamtools.ayka.dev/v/SteamTools.exe" class="download-button mirror-button" target="_blank" rel="noopener">
+      <a href="https://drive.google.com/file/d/1upIMKQs8dLCX-AXrruXfCl0S_iHns6Sh/view?usp=sharing" class="download-button mirror-button" target="_blank" rel="noopener">
         <i class="fas fa-cloud-download-alt download-icon"></i>
         Lien miroir de sauvegarde
       </a>
