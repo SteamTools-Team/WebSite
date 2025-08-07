@@ -11,6 +11,9 @@
     {
       "source": "/discord",
       "destination": "https://discord.gg/BQKnxfv3pX"
-    },
-  ]
+    }
+  ],
+  "error": {
+    "404": "/404.html"
+  }
 }
