@@ -32,11 +32,11 @@ body {
 }
 
 .container {
-  max-width: 580px; /* Réduit de 650px à 580px */
+  max-width: 580px;
   width: 100%;
   background: var(--bg-container);
-  padding: 38px; /* Réduit de 45px à 38px */
-  border-radius: 20px; /* Réduit de 24px à 20px */
+  padding: 38px;
+  border-radius: 20px;
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.4),
     0 0 0 1px var(--border-color);
@@ -59,7 +59,7 @@ body {
 
 header {
   text-align: center;
-  margin-bottom: 30px; /* Réduit de 35px à 30px */
+  margin-bottom: 30px;
   position: relative;
 }
 
@@ -89,9 +89,9 @@ header {
 }
 
 h1 {
-  font-size: 2rem; /* Réduit de 2.2rem à 2rem */
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 10px; /* Réduit de 12px à 10px */
+  margin-bottom: 10px;
   color: var(--text-primary);
   background: linear-gradient(135deg, var(--text-primary), var(--violet-hover));
   background-clip: text;
@@ -101,7 +101,7 @@ h1 {
 
 .subtitle {
   color: var(--text-secondary);
-  font-size: 1rem; /* Réduit de 1.1rem à 1rem */
+  font-size: 1rem;
   font-weight: 400;
   margin-bottom: 8px;
 }
@@ -109,14 +109,14 @@ h1 {
 .stats-info {
   background: linear-gradient(135deg, var(--violet-primary), var(--violet-hover));
   color: white;
-  padding: 7px 14px; /* Réduit de 8px 16px à 7px 14px */
-  border-radius: 18px; /* Réduit de 20px à 18px */
-  font-size: 0.85rem; /* Réduit de 0.9rem à 0.85rem */
+  padding: 7px 14px;
+  border-radius: 18px;
+  font-size: 0.85rem;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 8px; /* Réduit de 10px à 8px */
+  margin-top: 8px;
 }
 
 .stats-info i {
@@ -127,9 +127,9 @@ h1 {
   display: flex;
   align-items: center;
   background: var(--accent-bg);
-  padding: 22px; /* Réduit de 25px à 22px */
-  border-radius: 14px; /* Réduit de 16px à 14px */
-  margin: 28px 0; /* Réduit de 35px à 28px */
+  padding: 22px;
+  border-radius: 14px;
+  margin: 28px 0;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
 }
@@ -140,20 +140,20 @@ h1 {
 }
 
 .file-icon {
-  width: 50px; /* Réduit de 56px à 50px */
-  height: 50px; /* Réduit de 56px à 50px */
-  margin-right: 20px; /* Réduit de 25px à 20px */
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(140, 122, 230, 0.1);
-  border-radius: 10px; /* Réduit de 12px à 10px */
+  border-radius: 10px;
   border: 2px solid rgba(140, 122, 230, 0.3);
 }
 
 .file-icon img {
-  width: 36px; /* Réduit de 40px à 36px */
-  height: 36px; /* Réduit de 40px à 36px */
+  width: 36px;
+  height: 36px;
   object-fit: contain;
   filter: drop-shadow(0 0 8px var(--violet-primary));
 }
@@ -163,17 +163,17 @@ h1 {
 }
 
 .file-name {
-  font-size: 1.3rem; /* Réduit de 1.4rem à 1.3rem */
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 6px; /* Réduit de 8px à 6px */
+  margin-bottom: 6px;
 }
 
 .file-meta {
-  font-size: 0.9rem; /* Réduit de 0.95rem à 0.9rem */
+  font-size: 0.9rem;
   color: var(--text-secondary);
   display: flex;
-  gap: 18px; /* Réduit de 20px à 18px */
+  gap: 18px;
   flex-wrap: wrap;
 }
 
@@ -186,17 +186,17 @@ h1 {
 .download-options {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Réduit de 18px à 16px */
-  margin-bottom: 30px; /* Réduit de 35px à 30px */
+  gap: 16px;
+  margin-bottom: 30px;
 }
 
 .download-button {
   background: linear-gradient(135deg, var(--btn-bg), var(--btn-bg-hover));
   color: white;
-  padding: 16px 24px; /* Réduit de 18px 28px à 16px 24px */
-  border-radius: 10px; /* Réduit de 12px à 10px */
+  padding: 16px 24px;
+  border-radius: 10px;
   font-weight: 600;
-  font-size: 1rem; /* Réduit de 1.05rem à 1rem */
+  font-size: 1rem;
   text-align: center;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -206,7 +206,7 @@ h1 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px; /* Réduit de 10px à 8px */
+  gap: 8px;
   position: relative;
   overflow: hidden;
 }
@@ -257,42 +257,42 @@ h1 {
 }
 
 .download-icon {
-  font-size: 1.2rem; /* Réduit de 1.3rem à 1.2rem */
+  font-size: 1.2rem;
 }
 
 .old-versions {
   border-top: 1px solid var(--border-color);
-  padding-top: 22px; /* Réduit de 25px à 22px */
+  padding-top: 22px;
   text-align: center;
 }
 
 .old-versions h2 {
   font-weight: 600;
-  font-size: 1.2rem; /* Réduit de 1.3rem à 1.2rem */
+  font-size: 1.2rem;
   color: var(--text-primary);
-  margin-bottom: 18px; /* Réduit de 20px à 18px */
+  margin-bottom: 18px;
 }
 
 .old-versions-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Réduit de 200px à 180px */
-  gap: 10px; /* Réduit de 12px à 10px */
-  margin-top: 18px; /* Réduit de 20px à 18px */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 18px;
 }
 
 .old-download-button {
   background: transparent;
   border: 2px solid var(--border-color);
   color: var(--text-secondary);
-  padding: 10px 16px; /* Réduit de 12px 18px à 10px 16px */
-  border-radius: 8px; /* Réduit de 10px à 8px */
-  font-size: 0.85rem; /* Réduit de 0.9rem à 0.85rem */
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
   font-weight: 600;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px; /* Réduit de 8px à 6px */
+  gap: 6px;
   transition: all 0.3s ease;
   cursor: pointer;
 }
@@ -307,17 +307,17 @@ h1 {
 
 footer {
   color: var(--text-secondary);
-  font-size: 0.85rem; /* Réduit de 0.9rem à 0.85rem */
+  font-size: 0.85rem;
   text-align: center;
-  margin-top: 30px; /* Réduit de 35px à 30px */
-  padding-top: 22px; /* Réduit de 25px à 22px */
+  margin-top: 30px;
+  padding-top: 22px;
   border-top: 1px solid var(--border-color);
 }
 
 .loading-spinner {
   display: inline-block;
-  width: 18px; /* Réduit de 20px à 18px */
-  height: 18px; /* Réduit de 20px à 18px */
+  width: 18px;
+  height: 18px;
   border: 2px solid #ffffff40;
   border-radius: 50%;
   border-top-color: #ffffff;
@@ -328,34 +328,33 @@ footer {
   to { transform: rotate(360deg); }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .container {
-    padding: 30px 22px; /* Réduit de 35px 25px à 30px 22px */
+    padding: 30px 22px;
     margin: 10px;
   }
   
   .back-button {
     position: static;
     transform: none;
-    margin-bottom: 18px; /* Réduit de 20px à 18px */
+    margin-bottom: 18px;
     display: inline-flex;
     justify-content: center;
   }
   
   h1 {
-    font-size: 1.7rem; /* Réduit de 1.8rem à 1.7rem */
+    font-size: 1.7rem;
   }
   
   .file-info {
     flex-direction: column;
     text-align: center;
-    padding: 18px; /* Réduit de 20px à 18px */
+    padding: 18px;
   }
   
   .file-icon {
     margin-right: 0;
-    margin-bottom: 12px; /* Réduit de 15px à 12px */
+    margin-bottom: 12px;
   }
   
   .file-meta {
@@ -363,8 +362,8 @@ footer {
   }
   
   .download-button {
-    padding: 14px 20px; /* Réduit de 16px 24px à 14px 20px */
-    font-size: 0.95rem; /* Réduit de 1rem à 0.95rem */
+    padding: 14px 20px;
+    font-size: 0.95rem;
   }
   
   .old-versions-grid {
@@ -374,25 +373,26 @@ footer {
 
 @media (max-width: 480px) {
   .container {
-    padding: 22px 18px; /* Réduit de 25px 20px à 22px 18px */
+    padding: 22px 18px;
   }
   
   h1 {
-    font-size: 1.5rem; /* Réduit de 1.6rem à 1.5rem */
+    font-size: 1.5rem;
   }
   
   .file-meta {
     flex-direction: column;
-    gap: 6px; /* Réduit de 8px à 6px */
+    gap: 6px;
   }
   
   .download-button {
-    padding: 12px 18px; /* Réduit de 14px 20px à 12px 18px */
-    font-size: 0.9rem; /* Réduit de 0.95rem à 0.9rem */
+    padding: 12px 18px;
+    font-size: 0.9rem;
   }
   
   .old-download-button {
-    padding: 8px 14px; /* Réduit de 10px 16px à 8px 14px */
-    font-size: 0.8rem; /* Réduit de 0.85rem à 0.8rem */
+    padding: 8px 14px;
+    font-size: 0.8rem;
   }
 }
+
