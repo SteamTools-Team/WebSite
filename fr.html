@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="fav.ico" type="image/x-icon" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <meta name="description" content="Téléchargez SteamTools - L'outil ultime pour les passionnés de jeux Steam. Installation rapide, sûre et gratuite.">
+  <meta name="description" content="Téléchargez SteamTools - L'outil ultime pour les amateurs de jeux Steam. Installation rapide, sécurisée et gratuite.">
   <meta name="keywords" content="SteamTools, Steam, jeux, téléchargement, gaming, outils">
   <style>
     .discord-toast {
@@ -94,24 +94,6 @@
       .discord-actions { gap:6px; }
       .discord-join { padding:8px 12px; font-size:0.9rem; }
     }
-
-    /* Styles de page minimaux */
-    body { margin:0; font-family: Inter, Roboto, "Segoe UI", Arial, sans-serif; background:#0f1724; color:#e6eef8; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-    .container { max-width:980px; margin:28px auto; padding:20px; }
-    header { display:flex; gap:18px; align-items:center; justify-content:space-between; }
-    .back-button { color:#cbd7ff; text-decoration:none; display:inline-flex; align-items:center; gap:8px; }
-    h1 { margin:0; font-size:24px; }
-    .subtitle { margin:0; color:#9fb0ff; }
-    .file-info { display:flex; gap:16px; align-items:center; margin-top:20px; }
-    .file-icon img { width:64px; height:64px; display:block; }
-    .download-options { margin-top:18px; display:flex; gap:12px; flex-wrap:wrap; }
-    .download-button { background:#3350ff; color:#fff; border:none; padding:12px 16px; border-radius:10px; text-decoration:none; cursor:pointer; display:inline-flex; gap:10px; align-items:center; }
-    .old-versions { margin-top:22px; color:#cbd7ff; }
-    .old-versions-grid { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
-    .old-download-button { background:transparent; color:#9fb0ff; padding:8px 12px; border-radius:8px; text-decoration:none; border:1px solid rgba(255,255,255,0.04); }
-
-    .loading-spinner { width:16px; height:16px; border-radius:50%; border:2px solid rgba(255,255,255,0.12); border-top-color:#fff; animation:spin 0.8s linear infinite; display:inline-block; vertical-align:middle; }
-    @keyframes spin { to { transform:rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -120,15 +102,11 @@
       <a href="https://ayka.dev/" class="back-button">
         <i class="fas fa-arrow-left"></i> Retour
       </a>
-      <div style="flex:1; text-align:center;">
-        <h1>SteamTools</h1>
-        <p class="subtitle">Installation rapide et sécurisée</p>
-      </div>
-      <div style="text-align:right;">
-        <div class="stats-info">
-          <i class="fas fa-gamepad"></i>
-          <span id="games-count">Chargement...</span> jeux disponibles
-        </div>
+      <h1>SteamTools</h1>
+      <p class="subtitle">Installation rapide et sécurisée</p>
+      <div class="stats-info">
+        <i class="fas fa-gamepad"></i>
+        <span id="games-count">Chargement...</span> jeux disponibles
       </div>
     </header>
 
@@ -138,10 +116,10 @@
       </div>
       <div class="file-details">
         <div class="file-name">SteamTools</div>
-        <div class="file-meta" style="margin-top:6px; color:#9fb0ff;">
+        <div class="file-meta">
           <span><i class="fas fa-weight-hanging"></i> 10.8 MB</span>
-          <span style="margin-left:12px;"><i class="fas fa-calendar-alt"></i> 07-08-2025</span>
-          <span style="margin-left:12px;"><i class="fas fa-shield-alt"></i> Sûr</span>
+          <span><i class="fas fa-calendar-alt"></i> 07-08-2025</span>
+          <span><i class="fas fa-shield-alt"></i> Sécurisé</span>
         </div>
       </div>
     </div>
@@ -153,12 +131,12 @@
       </button>
       <a href="https://drive.google.com/file/d/1upIMKQs8dLCX-AXrruXfCl0S_iHns6Sh/view?usp=sharing" class="download-button mirror-button" target="_blank" rel="noopener">
         <i class="fas fa-cloud-download-alt download-icon"></i>
-        Lien miroir de sauvegarde
+        Miroir de sauvegarde
       </a>
     </div>
 
     <div class="old-versions">
-      <h2 style="margin-top:20px;"><i class="fas fa-history"></i> Anciennes versions</h2>
+      <h2><i class="fas fa-history"></i> Anciennes versions</h2>
       <div class="old-versions-grid">
         <a href="https://api.ayka.dev/SteamTools/SteamToolsV2.9.exe" class="old-download-button" target="_blank" rel="noopener">
           <i class="fas fa-download"></i> v2.9 (10.7 MB)
@@ -250,7 +228,7 @@
         });
 
         if (!response.ok) {
-          throw new Error(`L'API GitHub a répondu ${response.status}`);
+          throw new Error(`L'API GitHub a répondu avec ${response.status}`);
         }
 
         const repoData = await response.json();
@@ -271,7 +249,7 @@
 
         return 0;
       } catch (error) {
-        console.error('❌ Échec de la méthode GitHub simple :', error);
+        console.error('❌ Récupération GitHub simple échouée :', error);
         return 0;
       }
     }
