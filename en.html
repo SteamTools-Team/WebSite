@@ -9,6 +9,92 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <meta name="description" content="Download SteamTools - The ultimate tool for Steam game enthusiasts. Quick, secure, and free installation.">
   <meta name="keywords" content="SteamTools, Steam, games, download, gaming, tools">
+  <style>
+    .discord-toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 9999;
+      pointer-events: auto;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 320ms cubic-bezier(.2,.9,.3,1), opacity 320ms ease;
+      max-width: 540px;
+      width: calc(100% - 48px);
+      font-family: inherit;
+    }
+    .discord-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .discord-toast-content {
+      display:flex;
+      gap:14px;
+      align-items:center;
+      padding:14px 16px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(140,122,230,0.10), rgba(168,153,249,0.04));
+      border: 1px solid rgba(140,122,230,0.16);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.36);
+      backdrop-filter: blur(6px);
+      color: inherit;
+    }
+    .discord-icon {
+      width:64px;
+      height:64px;
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(180deg,#7b61ff,#a899ff);
+      color:#fff;
+      font-size:26px;
+      flex:0 0 64px;
+      box-shadow: 0 6px 18px rgba(123,97,255,0.18);
+    }
+    .discord-text { flex:1 1 auto; min-width:0; }
+    .discord-title { font-weight:800; font-size:1.04rem; margin-bottom:4px; }
+    .discord-sub { font-size:0.92rem; color:rgba(255,255,255,0.92); opacity:0.95; }
+    .discord-actions { display:flex; gap:10px; align-items:center; flex-shrink:0; margin-left:6px; }
+    .discord-join {
+      background: linear-gradient(135deg,#8c7ae6,#a899ff);
+      color:#fff;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:800;
+      text-decoration:none;
+      font-size:0.96rem;
+      box-shadow:0 8px 22px rgba(140,122,230,0.22);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .discord-join:active { transform: translateY(1px); }
+    .discord-close {
+      background:transparent;
+      border:none;
+      color:rgba(255,255,255,0.85);
+      font-size:20px;
+      cursor:pointer;
+      padding:6px;
+      line-height:1;
+      border-radius:6px;
+    }
+    .discord-close:hover { background: rgba(255,255,255,0.03); }
+    @media (max-width:840px){
+      .discord-toast { left:16px; right:16px; bottom:16px; max-width: calc(100% - 32px); width: calc(100% - 32px); }
+      .discord-icon { width:52px; height:52px; font-size:22px; flex:0 0 52px; }
+      .discord-title { font-size:1rem; }
+      .discord-sub { font-size:0.88rem; }
+      .discord-join { padding:8px 12px; font-size:0.92rem; }
+    }
+    @media (max-width:480px){
+      .discord-icon { display:none; }
+      .discord-sub { display:block; font-size:0.86rem; }
+      .discord-actions { gap:6px; }
+      .discord-join { padding:8px 12px; font-size:0.9rem; }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -73,6 +159,24 @@
         <i class="fas fa-lock"></i> Secure and verified download
       </p>
     </footer>
+  </div>
+
+  <div id="discord-toast" class="discord-toast" role="dialog" aria-live="polite" aria-label="Discord invitation" aria-hidden="true">
+    <div class="discord-toast-content">
+      <div class="discord-icon" aria-hidden="true">
+        <i class="fab fa-discord"></i>
+      </div>
+      <div class="discord-text">
+        <div class="discord-title">Join our Discord</div>
+        <div class="discord-sub">Help, news, support and game fixes</div>
+      </div>
+      <div class="discord-actions">
+        <a id="discord-join-btn" class="discord-join" href="https://discord.gg/GrSCq4DreV" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-discord"></i> Join
+        </a>
+        <button id="discord-close-btn" class="discord-close" aria-label="Close notification">&times;</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -212,6 +316,90 @@
       console.log('🔄 Updating counter...');
       getGamesCount();
     }, 600000);
+  </script>
+
+  <script>
+    (function () {
+      const TOAST_KEY = 'steamtools_discord_toast_closed_v1_en';
+      const SHOW_DELAY = 2000;
+      const AUTO_HIDE = 22000;
+      const SOUND_ENABLED = true;
+      const toast = document.getElementById('discord-toast');
+      const closeBtn = document.getElementById('discord-close-btn');
+      const joinBtn = document.getElementById('discord-join-btn');
+      try {
+        if (localStorage.getItem(TOAST_KEY) === '1') {
+          toast.style.display = 'none';
+          return;
+        }
+      } catch (e) {}
+      function playBeep() {
+        if (!SOUND_ENABLED) return;
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const o1 = ctx.createOscillator();
+          const o2 = ctx.createOscillator();
+          const g = ctx.createGain();
+          o1.type = 'sine';
+          o2.type = 'triangle';
+          o1.frequency.value = 880;
+          o2.frequency.value = 1320;
+          g.gain.value = 0;
+          o1.connect(g);
+          o2.connect(g);
+          g.connect(ctx.destination);
+          const now = ctx.currentTime;
+          g.gain.setValueAtTime(0, now);
+          g.gain.linearRampToValueAtTime(0.14, now + 0.01);
+          o1.start(now);
+          o2.start(now);
+          g.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
+          o1.stop(now + 0.35);
+          o2.stop(now + 0.35);
+          setTimeout(() => { try { ctx.close(); } catch (e) {} }, 700);
+        } catch (e) {}
+      }
+      function showToast() {
+        try {
+          toast.setAttribute('aria-hidden', 'false');
+          toast.classList.add('show');
+          playBeep();
+          if (AUTO_HIDE) {
+            setTimeout(hideToast, AUTO_HIDE);
+          }
+        } catch (e) {}
+      }
+      function hideToast() {
+        try {
+          toast.classList.remove('show');
+          toast.setAttribute('aria-hidden', 'true');
+          setTimeout(() => { toast.style.display = 'none'; }, 380);
+        } catch (e) {}
+      }
+      let showTimer = setTimeout(showToast, SHOW_DELAY);
+      function postpone() {
+        clearTimeout(showTimer);
+        showTimer = setTimeout(showToast, 900);
+        window.removeEventListener('scroll', postpone);
+        window.removeEventListener('mousemove', postpone);
+      }
+      window.addEventListener('scroll', postpone, { once: true });
+      window.addEventListener('mousemove', postpone, { once: true });
+      closeBtn.addEventListener('click', () => {
+        try { localStorage.setItem(TOAST_KEY, '1'); } catch (e) {}
+        hideToast();
+      });
+      joinBtn.addEventListener('click', () => {
+        try { localStorage.setItem(TOAST_KEY, '1'); } catch (e) {}
+        hideToast();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && toast.classList.contains('show')) {
+          try { localStorage.setItem(TOAST_KEY, '1'); } catch (e) {}
+          hideToast();
+        }
+      });
+    })();
   </script>
 </body>
 </html>
