@@ -6,14 +6,10 @@
   <title>Redirecting...</title>
   <script>
     function redirectImmediately() {
-      var userLang = navigator.language || navigator.userLanguage;
-      if (userLang && userLang.startsWith('fr')) {
-        window.location.href = '/fr';
-        return;
-      }
       fetch('https://ipapi.co/country/')
         .then(response => response.text())
         .then(country => {
+          console.log("Detected country:", country); // Debug
           if (country.toLowerCase() === 'fr') {
             window.location.href = '/fr';
           } else {
@@ -22,7 +18,7 @@
         })
         .catch(error => {
           console.error('Error fetching location:', error);
-          window.location.href = '/en';
+          window.location.href = '/en'; // fallback
         });
     }
 
