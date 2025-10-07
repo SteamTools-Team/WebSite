@@ -1,12 +1,24 @@
 {
   "rewrites": [
     {
-      "source": "/fr",
+      "source": "/fr-FR",
       "destination": "/fr.html"
     },
     {
-      "source": "/en",
+      "source": "/en-EN",
       "destination": "/en.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/fr",
+      "destination": "/fr-FR",
+      "permanent": true
+    },
+    {
+      "source": "/en",
+      "destination": "/en-EN",
+      "permanent": true
     }
   ]
 }
