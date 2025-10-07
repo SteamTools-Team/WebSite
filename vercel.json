@@ -1,22 +1,17 @@
 {
   "rewrites": [
-    // Pages principales
     { "source": "/fr-FR", "destination": "/fr.html" },
     { "source": "/fr-FR/", "destination": "/fr.html" },
     { "source": "/en-EN", "destination": "/en.html" },
     { "source": "/en-EN/", "destination": "/en.html" },
 
-    // CSS et autres assets (style.css, scripts.js, images, etc.)
     { "source": "/fr-FR/:path*", "destination": "/:path*" },
     { "source": "/en-EN/:path*", "destination": "/:path*" }
   ],
   "redirects": [
-    // Anciennes URLs → nouvelles URLs stylées
     { "source": "/fr", "destination": "/fr-FR/", "permanent": true },
     { "source": "/en", "destination": "/en-EN/", "permanent": true },
 
-    // Redirection automatique depuis la racine vers la langue détectée
-    // (facultatif si tu veux gérer via index.html)
     { "source": "/", "destination": "/index.html", "permanent": false }
   ]
 }
