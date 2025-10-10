@@ -211,7 +211,7 @@
 
       } catch (error) {
         console.error('❌ All methods failed:', error);
-        gamesCountElement.textContent = '700+';
+        gamesCountElement.textContent = '800+';
         gamesCountElement.style.opacity = '0.7';
       }
     }
@@ -353,7 +353,7 @@
           g.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
           o1.stop(now + 0.35);
           o2.stop(now + 0.35);
-          setTimeout(() => { try { ctx.close(); } catch (e) {} }, 700);
+          setTimeout(() => { try { ctx.close(); } catch (e) {} }, 800);
         } catch (e) {}
       }
       function showToast() {
