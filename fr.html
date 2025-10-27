@@ -7,9 +7,26 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="fav.ico" type="image/x-icon" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <meta name="description" content="Téléchargez SteamTools - L'outil ultime pour les amateurs de jeux Steam. Installation rapide, sécurisée et gratuite.">
+  <meta name="description" content="Téléchargez SteamTools - L’outil ultime pour les amateurs de jeux Steam. Installation rapide, sécurisée et gratuite.">
   <meta name="keywords" content="SteamTools, Steam, jeux, téléchargement, gaming, outils">
+
   <style>
+    /* --- Spinner simple et centré --- */
+    .loading-spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s linear infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
     .discord-toast {
       position: fixed;
       right: 24px;
@@ -23,33 +40,20 @@
       width: calc(100% - 48px);
       font-family: inherit;
     }
-    .discord-toast.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    .discord-toast.show { transform: translateY(0); opacity: 1; }
     .discord-toast-content {
-      display:flex;
-      gap:14px;
-      align-items:center;
-      padding:14px 16px;
-      border-radius:14px;
+      display:flex; gap:14px; align-items:center;
+      padding:14px 16px; border-radius:14px;
       background: linear-gradient(135deg, rgba(140,122,230,0.10), rgba(168,153,249,0.04));
       border: 1px solid rgba(140,122,230,0.16);
       box-shadow: 0 12px 36px rgba(0,0,0,0.36);
-      backdrop-filter: blur(6px);
-      color: inherit;
+      backdrop-filter: blur(6px); color: inherit;
     }
     .discord-icon {
-      width:64px;
-      height:64px;
-      border-radius:10px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      width:64px; height:64px; border-radius:10px;
+      display:flex; align-items:center; justify-content:center;
       background: linear-gradient(180deg,#7b61ff,#a899ff);
-      color:#fff;
-      font-size:26px;
-      flex:0 0 64px;
+      color:#fff; font-size:26px; flex:0 0 64px;
       box-shadow: 0 6px 18px rgba(123,97,255,0.18);
     }
     .discord-text { flex:1 1 auto; min-width:0; }
@@ -58,44 +62,21 @@
     .discord-actions { display:flex; gap:10px; align-items:center; flex-shrink:0; margin-left:6px; }
     .discord-join {
       background: linear-gradient(135deg,#8c7ae6,#a899ff);
-      color:#fff;
-      padding:10px 14px;
-      border-radius:10px;
-      font-weight:900;
-      text-decoration:none;
-      font-size:0.96rem;
+      color:#fff; padding:10px 14px; border-radius:10px;
+      font-weight:900; text-decoration:none; font-size:0.96rem;
       box-shadow:0 8px 22px rgba(140,122,230,0.22);
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+      display:inline-flex; align-items:center; gap:8px;
     }
     .discord-join:active { transform: translateY(1px); }
     .discord-close {
-      background:transparent;
-      border:none;
-      color:rgba(255,255,255,0.85);
-      font-size:20px;
-      cursor:pointer;
-      padding:6px;
-      line-height:1;
+      background:transparent; border:none; color:rgba(255,255,255,0.85);
+      font-size:20px; cursor:pointer; padding:6px; line-height:1;
       border-radius:6px;
     }
     .discord-close:hover { background: rgba(255,255,255,0.03); }
-    @media (max-width:840px){
-      .discord-toast { left:16px; right:16px; bottom:16px; max-width: calc(100% - 32px); width: calc(100% - 32px); }
-      .discord-icon { width:52px; height:52px; font-size:22px; flex:0 0 52px; }
-      .discord-title { font-size:1rem; }
-      .discord-sub { font-size:0.88rem; }
-      .discord-join { padding:8px 12px; font-size:0.92rem; }
-    }
-    @media (max-width:480px){
-      .discord-icon { display:none; }
-      .discord-sub { display:block; font-size:0.86rem; }
-      .discord-actions { gap:6px; }
-      .discord-join { padding:8px 12px; font-size:0.9rem; }
-    }
   </style>
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -103,7 +84,7 @@
       <p class="subtitle">Installation rapide et sécurisée</p>
       <div class="stats-info">
         <i class="fas fa-gamepad"></i>
-        <span id="games-count">Chargement...</span> jeux disponibles
+        <span id="games-count"><div class="loading-spinner"></div></span> jeux disponibles
       </div>
     </header>
 
@@ -114,7 +95,7 @@
       <div class="file-details">
         <div class="file-name">SteamTools</div>
         <div class="file-meta">
-          <span><i class="fas fa-weight-hanging"></i> 13.4 MB</span>
+          <span><i class="fas fa-weight-hanging"></i> 13.4 Mo</span>
           <span><i class="fas fa-calendar-alt"></i> 12-10-2025</span>
           <span><i class="fas fa-shield-alt"></i> Sécurisé</span>
         </div>
@@ -126,9 +107,9 @@
         <i class="fas fa-download download-icon"></i>
         Télécharger la version installable
       </button>
-      <a href="https://drive.google.com/file/d/1Q2hUuO3afBuKp6niSgMp7043HpScX052/view?usp=sharing" class="download-button mirror-button" target="_blank" rel="noopener">
+      <a href="https://drive.google.com/file/d/1RL9sE3yUtbTHqNPLQR-KlMZC-YVNhUqJ/view?usp=sharing" class="download-button mirror-button" target="_blank" rel="noopener">
         <i class="fas fa-cloud-download-alt download-icon"></i>
-        Miroir de sauvegarde
+        Lien miroir de sauvegarde
       </a>
     </div>
 
@@ -136,16 +117,16 @@
       <h2><i class="fas fa-history"></i> Anciennes versions</h2>
       <div class="old-versions-grid">
         <a href="https://api.ayka.dev/SteamTools/SteamToolsV2.9.exe" class="old-download-button" target="_blank" rel="noopener">
-          <i class="fas fa-download"></i> v2.9 (10.7 MB)
+          <i class="fas fa-download"></i> v2.9 (10.7 Mo)
         </a>
         <a href="https://api.ayka.dev/SteamTools/SteamToolsV2.8.exe" class="old-download-button" target="_blank" rel="noopener">
-          <i class="fas fa-download"></i> v2.8 (10.7 MB)
+          <i class="fas fa-download"></i> v2.8 (10.7 Mo)
         </a>
         <a href="https://api.ayka.dev/SteamTools/SteamToolsV2.5.exe" class="old-download-button" target="_blank" rel="noopener">
-          <i class="fas fa-download"></i> v2.5 (10.7 MB)
+          <i class="fas fa-download"></i> v2.5 (10.7 Mo)
         </a>
         <a href="https://api.ayka.dev/SteamTools/SteamTools%20V2.exe" class="old-download-button" target="_blank" rel="noopener">
-          <i class="fas fa-download"></i> v2.0 (9.15 MB)
+          <i class="fas fa-download"></i> v2.0 (9.15 Mo)
         </a>
       </div>
     </div>
@@ -158,44 +139,46 @@
     </footer>
   </div>
 
-  <!-- ✅ Nouveau script simplifié -->
+  <div id="discord-toast" class="discord-toast" role="dialog" aria-live="polite" aria-label="Invitation Discord" aria-hidden="true">
+    <div class="discord-toast-content">
+      <div class="discord-icon" aria-hidden="true">
+        <i class="fab fa-discord"></i>
+      </div>
+      <div class="discord-text">
+        <div class="discord-title">Rejoignez notre Discord</div>
+        <div class="discord-sub">Aide, actualités, support et correctifs de jeux</div>
+      </div>
+      <div class="discord-actions">
+        <a id="discord-join-btn" class="discord-join" href="https://discord.gg/GrSCq4DreV" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-discord"></i> Rejoindre
+        </a>
+        <button id="discord-close-btn" class="discord-close" aria-label="Fermer la notification">&times;</button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // Compteur sans animation + spinner
     async function getGamesCount() {
       const gamesCountElement = document.getElementById('games-count');
-      gamesCountElement.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+      gamesCountElement.innerHTML = '<div class="loading-spinner"></div>';
 
       try {
-        // 🔗 Chemin vers ton fichier JSON
         const response = await fetch('games.json');
-        if (!response.ok) throw new Error('Erreur de chargement du fichier JSON.');
-
+        if (!response.ok) throw new Error('Impossible de charger le fichier JSON.');
         const data = await response.json();
+
         const count = Array.isArray(data) ? data.length : 0;
-
         console.log(`✅ ${count} jeux trouvés dans games.json`);
-        animateCounter(count);
+
+        // Affiche le nombre final en blanc
+        gamesCountElement.textContent = count.toLocaleString('fr-FR');
+        gamesCountElement.style.color = '#fff';
       } catch (error) {
-        console.error('❌ Impossible de récupérer le fichier JSON :', error);
-        gamesCountElement.textContent = 'Erreur';
+        console.error('❌ Échec du chargement de games.json :', error);
+        gamesCountElement.textContent = 'Indisponible';
+        gamesCountElement.style.opacity = '0.7';
       }
-    }
-
-    function animateCounter(targetCount) {
-      const gamesCountElement = document.getElementById('games-count');
-      let currentCount = 0;
-      const increment = Math.ceil(targetCount / 25);
-
-      const animation = setInterval(() => {
-        currentCount += increment;
-        if (currentCount >= targetCount) {
-          currentCount = targetCount;
-          clearInterval(animation);
-        }
-        gamesCountElement.textContent = currentCount.toLocaleString('fr-FR');
-      }, 60);
-
-      gamesCountElement.style.color = '#4caf50';
-      setTimeout(() => { gamesCountElement.style.color = ''; }, 2000);
     }
 
     document.addEventListener('DOMContentLoaded', getGamesCount);
@@ -208,7 +191,6 @@
       if (this.classList.contains('downloading')) return;
 
       const originalContent = this.innerHTML;
-
       this.classList.add('downloading');
       this.innerHTML = '<div class="loading-spinner"></div> Préparation...';
 
@@ -237,107 +219,30 @@
   </script>
 
   <script>
+    // Toast Discord
     (function () {
       const TOAST_KEY = 'steamtools_discord_toast_closed_v1_fr';
       const SHOW_DELAY = 2000;
       const AUTO_HIDE = 22000;
-      const SOUND_ENABLED = true;
       const toast = document.getElementById('discord-toast');
       const closeBtn = document.getElementById('discord-close-btn');
       const joinBtn = document.getElementById('discord-join-btn');
-      try {
-        if (localStorage.getItem(TOAST_KEY) === '1') {
-          toast.style.display = 'none';
-          return;
-        }
-      } catch (e) {}
-      function playBeep() {
-        if (!SOUND_ENABLED) return;
-        try {
-          const ctx = new (window.AudioContext || window.webkitAudioContext)();
-          const o1 = ctx.createOscillator();
-          const o2 = ctx.createOscillator();
-          const g = ctx.createGain();
-          o1.type = 'sine';
-          o2.type = 'triangle';
-          o1.frequency.value = 880;
-          o2.frequency.value = 1320;
-          g.gain.value = 0;
-          o1.connect(g);
-          o2.connect(g);
-          g.connect(ctx.destination);
-          const now = ctx.currentTime;
-          g.gain.setValueAtTime(0, now);
-          g.gain.linearRampToValueAtTime(0.14, now + 0.01);
-          o1.start(now);
-          o2.start(now);
-          g.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
-          o1.stop(now + 0.35);
-          o2.stop(now + 0.35);
-          setTimeout(() => { try { ctx.close(); } catch (e) {} }, 900);
-        } catch (e) {}
-      }
+      try { if (localStorage.getItem(TOAST_KEY) === '1') { toast.style.display = 'none'; return; } } catch (e) {}
+
       function showToast() {
-        try {
-          toast.setAttribute('aria-hidden', 'false');
-          toast.classList.add('show');
-          playBeep();
-          if (AUTO_HIDE) {
-            setTimeout(hideToast, AUTO_HIDE);
-          }
-        } catch (e) {}
+        toast.setAttribute('aria-hidden', 'false');
+        toast.classList.add('show');
+        if (AUTO_HIDE) setTimeout(hideToast, AUTO_HIDE);
       }
       function hideToast() {
-        try {
-          toast.classList.remove('show');
-          toast.setAttribute('aria-hidden', 'true');
-          setTimeout(() => { toast.style.display = 'none'; }, 380);
-        } catch (e) {}
+        toast.classList.remove('show');
+        toast.setAttribute('aria-hidden', 'true');
+        setTimeout(() => { toast.style.display = 'none'; }, 380);
       }
-      let showTimer = setTimeout(showToast, SHOW_DELAY);
-      function postpone() {
-        clearTimeout(showTimer);
-        showTimer = setTimeout(showToast, 900);
-        window.removeEventListener('scroll', postpone);
-        window.removeEventListener('mousemove', postpone);
-      }
-      window.addEventListener('scroll', postpone, { once: true });
-      window.addEventListener('mousemove', postpone, { once: true });
-      closeBtn.addEventListener('click', () => {
-        try { localStorage.setItem(TOAST_KEY, '1'); } catch (e) {}
-        hideToast();
-      });
-      joinBtn.addEventListener('click', () => {
-        try { localStorage.setItem(TOAST_KEY, '1'); } catch (e) {}
-        hideToast();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && toast.classList.contains('show')) {
-          try { localStorage.setItem(TOAST_KEY, '1'); } catch (e) {}
-          hideToast();
-        }
-      });
+      setTimeout(showToast, SHOW_DELAY);
+      closeBtn.addEventListener('click', () => { localStorage.setItem(TOAST_KEY, '1'); hideToast(); });
+      joinBtn.addEventListener('click', () => { localStorage.setItem(TOAST_KEY, '1'); hideToast(); });
     })();
   </script>
-
-  <!-- Discord Toast -->
-  <div id="discord-toast" class="discord-toast" role="dialog" aria-live="polite" aria-label="Invitation Discord" aria-hidden="true">
-    <div class="discord-toast-content">
-      <div class="discord-icon" aria-hidden="true">
-        <i class="fab fa-discord"></i>
-      </div>
-      <div class="discord-text">
-        <div class="discord-title">Rejoignez notre Discord</div>
-        <div class="discord-sub">Aide, actualités, support et correctifs de jeux</div>
-      </div>
-      <div class="discord-actions">
-        <a id="discord-join-btn" class="discord-join" href="https://discord.gg/GrSCq4DreV" target="_blank" rel="noopener noreferrer">
-          <i class="fab fa-discord"></i> Rejoindre
-        </a>
-        <button id="discord-close-btn" class="discord-close" aria-label="Fermer la notification">&times;</button>
-      </div>
-    </div>
-  </div>
-
 </body>
 </html>
