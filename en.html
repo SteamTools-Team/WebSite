@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <meta name="description" content="Download SteamTools - The ultimate tool for Steam game enthusiasts. Quick, secure, and free installation.">
   <meta name="keywords" content="SteamTools, Steam, games, download, gaming, tools">
-
   <style>
     .discord-toast {
       position: fixed;
@@ -58,22 +57,8 @@
       border-radius:6px;
     }
     .discord-close:hover { background: rgba(255,255,255,0.03); }
-    @media (max-width:840px){
-      .discord-toast { left:16px; right:16px; bottom:16px; max-width: calc(100% - 32px); width: calc(100% - 32px); }
-      .discord-icon { width:52px; height:52px; font-size:22px; flex:0 0 52px; }
-      .discord-title { font-size:1rem; }
-      .discord-sub { font-size:0.88rem; }
-      .discord-join { padding:8px 12px; font-size:0.92rem; }
-    }
-    @media (max-width:480px){
-      .discord-icon { display:none; }
-      .discord-sub { display:block; font-size:0.86rem; }
-      .discord-actions { gap:6px; }
-      .discord-join { padding:8px 12px; font-size:0.9rem; }
-    }
   </style>
 </head>
-
 <body>
   <div class="container">
     <header>
@@ -81,7 +66,7 @@
       <p class="subtitle">Quick and secure installation</p>
       <div class="stats-info">
         <i class="fas fa-gamepad"></i>
-        <span id="games-count">Loading...</span> games available
+        <span id="games-count">Calculating...</span> games available
       </div>
     </header>
 
@@ -155,10 +140,9 @@
   </div>
 
   <script>
-    // --- Nouvelle version du compteur de jeux (lecture locale JSON) ---
     async function getGamesCount() {
       const gamesCountElement = document.getElementById('games-count');
-      gamesCountElement.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+      gamesCountElement.textContent = 'Calculating...';
 
       try {
         const response = await fetch('games.json');
@@ -168,36 +152,20 @@
         const count = Array.isArray(data) ? data.length : 0;
 
         console.log(`✅ ${count} games found in games.json`);
-        animateCounter(count);
+        gamesCountElement.textContent = count.toLocaleString('en-US');
+        gamesCountElement.style.color = '#4caf50';
+        setTimeout(() => { gamesCountElement.style.color = ''; }, 2000);
       } catch (error) {
         console.error('❌ Failed to fetch games.json:', error);
-        gamesCountElement.textContent = 'Error';
+        gamesCountElement.textContent = 'Unavailable';
+        gamesCountElement.style.opacity = '0.7';
       }
-    }
-
-    function animateCounter(targetCount) {
-      const gamesCountElement = document.getElementById('games-count');
-      let currentCount = 0;
-      const increment = Math.ceil(targetCount / 25);
-
-      const animation = setInterval(() => {
-        currentCount += increment;
-        if (currentCount >= targetCount) {
-          currentCount = targetCount;
-          clearInterval(animation);
-        }
-        gamesCountElement.textContent = currentCount.toLocaleString('en-US');
-      }, 60);
-
-      gamesCountElement.style.color = '#4caf50';
-      setTimeout(() => { gamesCountElement.style.color = ''; }, 2000);
     }
 
     document.addEventListener('DOMContentLoaded', getGamesCount);
   </script>
 
   <script>
-    // --- Gestion du bouton de téléchargement ---
     document.getElementById('local-download').addEventListener('click', function(e) {
       e.preventDefault();
 
@@ -232,7 +200,6 @@
   </script>
 
   <script>
-    // --- Discord toast notification ---
     (function () {
       const TOAST_KEY = 'steamtools_discord_toast_closed_v1_en';
       const SHOW_DELAY = 2000;
@@ -241,57 +208,20 @@
       const toast = document.getElementById('discord-toast');
       const closeBtn = document.getElementById('discord-close-btn');
       const joinBtn = document.getElementById('discord-join-btn');
-
       try { if (localStorage.getItem(TOAST_KEY) === '1') { toast.style.display = 'none'; return; } } catch (e) {}
-
-      function playBeep() {
-        if (!SOUND_ENABLED) return;
-        try {
-          const ctx = new (window.AudioContext || window.webkitAudioContext)();
-          const o1 = ctx.createOscillator();
-          const o2 = ctx.createOscillator();
-          const g = ctx.createGain();
-          o1.type = 'sine'; o2.type = 'triangle';
-          o1.frequency.value = 880; o2.frequency.value = 1320;
-          g.gain.value = 0;
-          o1.connect(g); o2.connect(g); g.connect(ctx.destination);
-          const now = ctx.currentTime;
-          g.gain.linearRampToValueAtTime(0.14, now + 0.01);
-          o1.start(now); o2.start(now);
-          g.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
-          o1.stop(now + 0.35); o2.stop(now + 0.35);
-          setTimeout(() => ctx.close(), 800);
-        } catch (e) {}
-      }
-
       function showToast() {
         toast.setAttribute('aria-hidden', 'false');
         toast.classList.add('show');
-        playBeep();
         if (AUTO_HIDE) setTimeout(hideToast, AUTO_HIDE);
       }
-
       function hideToast() {
         toast.classList.remove('show');
         toast.setAttribute('aria-hidden', 'true');
         setTimeout(() => { toast.style.display = 'none'; }, 380);
       }
-
-      let showTimer = setTimeout(showToast, SHOW_DELAY);
-      function postpone() {
-        clearTimeout(showTimer);
-        showTimer = setTimeout(showToast, 900);
-        window.removeEventListener('scroll', postpone);
-        window.removeEventListener('mousemove', postpone);
-      }
-      window.addEventListener('scroll', postpone, { once: true });
-      window.addEventListener('mousemove', postpone, { once: true });
-
+      setTimeout(showToast, SHOW_DELAY);
       closeBtn.addEventListener('click', () => { localStorage.setItem(TOAST_KEY, '1'); hideToast(); });
       joinBtn.addEventListener('click', () => { localStorage.setItem(TOAST_KEY, '1'); hideToast(); });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && toast.classList.contains('show')) { localStorage.setItem(TOAST_KEY, '1'); hideToast(); }
-      });
     })();
   </script>
 </body>
