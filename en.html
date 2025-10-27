@@ -9,7 +9,24 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <meta name="description" content="Download SteamTools - The ultimate tool for Steam game enthusiasts. Quick, secure, and free installation.">
   <meta name="keywords" content="SteamTools, Steam, games, download, gaming, tools">
+
   <style>
+    /* --- Spinner simple et centré --- */
+    .loading-spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s linear infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
     .discord-toast {
       position: fixed;
       right: 24px;
@@ -59,6 +76,7 @@
     .discord-close:hover { background: rgba(255,255,255,0.03); }
   </style>
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -66,7 +84,7 @@
       <p class="subtitle">Quick and secure installation</p>
       <div class="stats-info">
         <i class="fas fa-gamepad"></i>
-        <span id="games-count">Calculating...</span> games available
+        <span id="games-count"><div class="loading-spinner"></div></span> games available
       </div>
     </header>
 
@@ -140,21 +158,22 @@
   </div>
 
   <script>
+    // Compteur sans animation + spinner
     async function getGamesCount() {
       const gamesCountElement = document.getElementById('games-count');
-      gamesCountElement.textContent = 'Calculating...';
+      gamesCountElement.innerHTML = '<div class="loading-spinner"></div>';
 
       try {
         const response = await fetch('games.json');
         if (!response.ok) throw new Error('Cannot load JSON file.');
-
         const data = await response.json();
-        const count = Array.isArray(data) ? data.length : 0;
 
+        const count = Array.isArray(data) ? data.length : 0;
         console.log(`✅ ${count} games found in games.json`);
+
+        // Affiche le nombre final en blanc
         gamesCountElement.textContent = count.toLocaleString('en-US');
-        gamesCountElement.style.color = '#4caf50';
-        setTimeout(() => { gamesCountElement.style.color = ''; }, 2000);
+        gamesCountElement.style.color = '#fff';
       } catch (error) {
         console.error('❌ Failed to fetch games.json:', error);
         gamesCountElement.textContent = 'Unavailable';
@@ -200,15 +219,16 @@
   </script>
 
   <script>
+    // Discord toast
     (function () {
       const TOAST_KEY = 'steamtools_discord_toast_closed_v1_en';
       const SHOW_DELAY = 2000;
       const AUTO_HIDE = 22000;
-      const SOUND_ENABLED = true;
       const toast = document.getElementById('discord-toast');
       const closeBtn = document.getElementById('discord-close-btn');
       const joinBtn = document.getElementById('discord-join-btn');
       try { if (localStorage.getItem(TOAST_KEY) === '1') { toast.style.display = 'none'; return; } } catch (e) {}
+
       function showToast() {
         toast.setAttribute('aria-hidden', 'false');
         toast.classList.add('show');
