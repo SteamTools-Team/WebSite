@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "rewrites": [
     { "source": "/fr-FR", "destination": "/fr.html" },
     { "source": "/fr-FR/", "destination": "/fr.html" },
