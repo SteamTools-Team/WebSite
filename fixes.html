@@ -50,7 +50,8 @@ function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;","
 
 function render(list){
   const q=document.getElementById("search").value.toLowerCase();
-  const items=list.filter(i=>!q||i.name.toLowerCase().includes(q));
+  const safeList=Array.isArray(list)?list:[];
+  const items=safeList.filter(i=>!q||i.name.toLowerCase().includes(q));
   if(!items.length)return document.getElementById("content").innerHTML=`<div class="empty">Aucun fichier trouvé.</div>`;
   document.getElementById("content").innerHTML=`<div class="grid">`+items.map(it=>`
     <a href="${it.url}" target="_blank" class="card">
@@ -67,22 +68,25 @@ async function fetchFixes(force=false){
   if(cache&&!force){
     const data=JSON.parse(cache);
     if(Date.now()-data.timestamp<CACHE_TTL){
-      allFixes=data.fixes;render(allFixes);
+      allFixes=Array.isArray(data.fixes)?data.fixes:[];render(allFixes);
       console.log("💾 Cache chargé");
       return;
     }
   }
   document.getElementById("content").innerHTML=`<div class="empty">Chargement...</div>`;
   try{
-    const res=await fetch(API_URL);
-    const data=await res.json();
-    allFixes=data.fixes;
+    const res=await fetch(API_URL,{headers:{"accept":"application/json"}});
+    let data;
+    try{ data=await res.json(); }catch{ data=null; }
+    if(!res.ok) throw new Error((data&&data.error)||`Erreur API (${res.status})`);
+    if(!data||!Array.isArray(data.fixes)) throw new Error("Réponse mal formée");
+    allFixes=data.fixes||[];
     localStorage.setItem(CACHE_KEY,JSON.stringify({timestamp:Date.now(),fixes:allFixes}));
     render(allFixes);
     console.log("⚡ Cache mis à jour");
   }catch(e){
     console.error(e);
-    document.getElementById("content").innerHTML=`<div class="empty">Erreur lors du chargement des fixes</div>`;
+    document.getElementById("content").innerHTML=`<div class="empty">Erreur lors du chargement des fixes${e&&e.message?` : ${escapeHtml(String(e.message))}`:""}</div>`;
   }
 }
 
