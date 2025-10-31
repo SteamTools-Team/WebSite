@@ -97,6 +97,19 @@ function parseFixes(html){
   }).filter(f=> (f.name||'').toLowerCase().includes('.zip'));
 }
 
+// Récupère un appid Steam depuis la recherche du store via r.jina.ai (CORS OK)
+async function getAppIdFromSteamStore(name){
+  try{
+    const q = encodeURIComponent(name);
+    const url = `https://r.jina.ai/http://store.steampowered.com/search/?term=${q}`;
+    const text = await fetchViaProxies(url); // renvoie du texte lisible
+    const m = String(text||"").match(/\/app\/(\d+)/);
+    return m ? m[1] : null;
+  }catch{
+    return null;
+  }
+}
+
 async function getSteamImage(gameName){
   try{
     const name = (gameName||'').replace(/\.zip$/i,'').trim();
@@ -104,6 +117,15 @@ async function getSteamImage(gameName){
     if(!window.__imgCache) window.__imgCache = new Map();
     if(window.__imgCache.has(name)) return window.__imgCache.get(name);
     
+    // 1) Essai par recherche Store Steam (via r.jina.ai) pour obtenir un appid
+    const appidFromStore = await getAppIdFromSteamStore(name);
+    if(appidFromStore){
+      const header = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appidFromStore}/header.jpg`;
+      window.__imgCache.set(name, header);
+      console.log(`✓ Image trouvée (Store) pour "${name}": ${header}`);
+      return header;
+    }
+
     // Essayer d'abord avec SteamGridDB (API plus ouverte)
     try{
       const clean = encodeURIComponent(name);
