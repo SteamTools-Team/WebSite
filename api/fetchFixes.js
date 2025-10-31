@@ -1,72 +1,99 @@
-// /api/fetchFixes.js
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fixes – Cache + SteamDB</title>
+<style>
+/* ton thème violet */
+:root {
+  --bg-main:#121212;--bg-container:#1e1e2f;--text-primary:#e0e0f0;--text-secondary:#a0a0b8;
+  --violet-primary:#8c7ae6;--violet-hover:#a899f9;--border-color:#2a2a45;--accent-bg:#29294b;
+}
+body{background:linear-gradient(135deg,var(--bg-main) 0%,#1a1a2e 100%);
+color:var(--text-primary);font-family:"Segoe UI",sans-serif;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:40px 20px;}
+.container{background:var(--bg-container);border:1px solid var(--border-color);border-radius:20px;max-width:900px;width:100%;padding:40px;box-shadow:0 20px 40px rgba(0,0,0,.4);}
+h1{font-size:2rem;text-align:center;background:linear-gradient(135deg,var(--text-primary),var(--violet-hover));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+#controls{display:flex;gap:10px;justify-content:center;margin:20px 0;}
+#search{flex:1;max-width:350px;padding:10px 14px;border-radius:10px;border:1px solid var(--border-color);background:var(--accent-bg);color:var(--text-primary);}
+#reload{padding:10px 18px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--violet-primary),var(--violet-hover));
+color:white;font-weight:600;cursor:pointer;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:20px;}
+.card{background:var(--accent-bg);border:1px solid var(--border-color);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:.3s;}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(140,122,230,.3);}
+.card img{width:100%;height:140px;object-fit:cover;filter:brightness(0.85);}
+.card .info{padding:12px;}
+.filename{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.size{font-size:.85rem;color:var(--text-secondary);margin-top:4px;}
+.empty{text-align:center;color:var(--text-secondary);margin-top:40px;}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🎮 Liste des Fixes</h1>
+  <div id="controls">
+    <input id="search" type="search" placeholder="Rechercher un jeu...">
+    <button id="reload">Recharger</button>
+  </div>
+  <div id="content"></div>
+</div>
 
-const SOURCE_URL = "https://generator.ryuu.lol/fixes";
-const PROXIES = [
-  url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
-  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-  url => `https://thingproxy.freeboard.io/fetch/${url}`,
-];
+<script>
+const API_URL = "/api/fetchFixes";
+const CACHE_KEY = "fixes-cache";
+const CACHE_TTL = 3600 * 1000; // 1 heure
 
-// -- utilitaires ---------------------------------------------------------
-async function tryFetchViaProxies(url) {
-  for (const make of PROXIES) {
-    try {
-      const r = await fetch(make(url));
-      if (!r.ok) continue;
-      const type = r.headers.get("content-type") || "";
-      if (type.includes("json")) {
-        const j = await r.json();
-        return j.contents || j;
-      } else return await r.text();
-    } catch (_) {}
+let allFixes = [];
+
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+
+function render(list){
+  const q=document.getElementById("search").value.toLowerCase();
+  const safeList=Array.isArray(list)?list:[];
+  const items=safeList.filter(i=>!q||i.name.toLowerCase().includes(q));
+  if(!items.length)return document.getElementById("content").innerHTML=`<div class="empty">Aucun fichier trouvé.</div>`;
+  document.getElementById("content").innerHTML=`<div class="grid">`+items.map(it=>`
+    <a href="${it.url}" target="_blank" class="card">
+      <img src="${it.image||'https://cdn-icons-png.flaticon.com/512/716/716784.png'}" alt="">
+      <div class="info">
+        <div class="filename">${escapeHtml(it.name)}</div>
+        <div class="size">${escapeHtml(it.size||"")}</div>
+      </div>
+    </a>`).join("")+`</div>`;
+}
+
+async function fetchFixes(force=false){
+  const cache=localStorage.getItem(CACHE_KEY);
+  if(cache&&!force){
+    const data=JSON.parse(cache);
+    if(Date.now()-data.timestamp<CACHE_TTL){
+      allFixes=Array.isArray(data.fixes)?data.fixes:[];render(allFixes);
+      console.log("💾 Cache chargé");
+      return;
+    }
   }
-  throw new Error("Impossible de récupérer la page source");
-}
-
-async function parseFixes(html) {
-  const { JSDOM } = await import("jsdom");
-  const dom = new JSDOM(html);
-  const doc = dom.window.document;
-  const anchors = [...doc.querySelectorAll("a.file-item, a[href$='.zip']")];
-  return anchors.map(a => {
-    const name = (a.querySelector(".file-name")?.textContent || a.textContent || "").trim();
-    const href = a.getAttribute("href") || "";
-    let absoluteUrl = href;
-    try { absoluteUrl = new URL(href, SOURCE_URL).toString(); } catch {}
-    return {
-      name,
-      url: absoluteUrl,
-      size: (a.querySelector(".file-size")?.textContent || "").trim(),
-    };
-  }).filter(f => f.name.toLowerCase().includes(".zip"));
-}
-
-// Cherche une image SteamDB
-async function getSteamImage(gameName) {
-  try {
-    const clean = encodeURIComponent(gameName.replace(/\.zip$/i, "").trim());
-    const r = await fetch(`https://steamdb.info/api/GetSearchSuggestions/?query=${clean}`);
-    const json = await r.json();
-    const first = json?.results?.[0];
-    if (!first) return null;
-    return `https://cdn.cloudflare.steamstatic.com/steam/apps/${first.appid}/header.jpg`;
-  } catch {
-    return null;
+  document.getElementById("content").innerHTML=`<div class="empty">Chargement...</div>`;
+  try{
+    const res=await fetch(API_URL,{headers:{"accept":"application/json"}});
+    let data;
+    try{ data=await res.json(); }catch{ data=null; }
+    if(!res.ok) throw new Error((data&&data.error)||`Erreur API (${res.status})`);
+    if(!data||!Array.isArray(data.fixes)) throw new Error("Réponse mal formée");
+    allFixes=data.fixes||[];
+    localStorage.setItem(CACHE_KEY,JSON.stringify({timestamp:Date.now(),fixes:allFixes}));
+    render(allFixes);
+    console.log("⚡ Cache mis à jour");
+  }catch(e){
+    console.error(e);
+    document.getElementById("content").innerHTML=`<div class="empty">Erreur lors du chargement des fixes${e&&e.message?` : ${escapeHtml(String(e.message))}`:""}</div>`;
   }
 }
 
-// -- handler -------------------------------------------------------------
-module.exports = async function handler(req, res) {
-  try {
-    const html = await tryFetchViaProxies(SOURCE_URL);
-    let fixes = await parseFixes(html);
-    // ajoute une miniature via SteamDB
-    const limited = fixes.slice(0, 50); // pour éviter de surcharger SteamDB
-    await Promise.all(limited.map(async f => f.image = await getSteamImage(f.name)));
+document.getElementById("search").oninput=()=>render(allFixes);
+document.getElementById("reload").onclick=()=>fetchFixes(true);
 
-    res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate");
-    res.status(200).json({ lastUpdate: new Date().toISOString(), total: fixes.length, fixes });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-}
+fetchFixes();
+</script>
+</body>
+</html>
