@@ -23,8 +23,9 @@ async function tryFetchViaProxies(url) {
   throw new Error("Impossible de récupérer la page source");
 }
 
-function parseFixes(html) {
-  const dom = new (require("jsdom").JSDOM)(html);
+async function parseFixes(html) {
+  const { JSDOM } = await import("jsdom");
+  const dom = new JSDOM(html);
   const doc = dom.window.document;
   const anchors = [...doc.querySelectorAll("a.file-item, a[href$='.zip']")];
   return anchors.map(a => {
@@ -58,7 +59,7 @@ async function getSteamImage(gameName) {
 module.exports = async function handler(req, res) {
   try {
     const html = await tryFetchViaProxies(SOURCE_URL);
-    let fixes = parseFixes(html);
+    let fixes = await parseFixes(html);
     // ajoute une miniature via SteamDB
     const limited = fixes.slice(0, 50); // pour éviter de surcharger SteamDB
     await Promise.all(limited.map(async f => f.image = await getSteamImage(f.name)));
