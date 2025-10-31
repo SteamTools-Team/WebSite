@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "regions": ["fra1"],
+
   "rewrites": [
     { "source": "/fr-FR", "destination": "/fr.html" },
     { "source": "/fr-FR/", "destination": "/fr.html" },
@@ -9,10 +11,21 @@
     { "source": "/fr-FR/:path*", "destination": "/:path*" },
     { "source": "/en-EN/:path*", "destination": "/:path*" }
   ],
+
   "redirects": [
     { "source": "/fr", "destination": "/fr-FR/", "permanent": true },
     { "source": "/en", "destination": "/en-EN/", "permanent": true },
 
-    { "source": "/", "destination": "/index.html", "permanent": false }
+    { "source": "/", "destination": "/fr-FR/", "permanent": false }
+  ],
+
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Content-Language", "value": "fr-FR" },
+        { "key": "X-Region", "value": "fra1" }
+      ]
+    }
   ]
 }
