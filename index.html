@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting...</title>
+  <meta http-equiv="refresh" content="5;url=/en-EN/">
+  <script>
+    async function redirectImmediately() {
+      try {
+        // 1. Vérifie si une langue est déjà stockée localement
+        const savedLang = localStorage.getItem('preferredLang');
+        if (savedLang) {
+          window.location.replace(`/${savedLang}/`);
+          return;
+        }
+
+        // 2. Détection via ipapi.co
+        const response = await fetch('https://ipapi.co/country/');
+        const country = (await response.text()).trim().toLowerCase();
+        console.log("Detected country:", country);
+
+        // 3. Choix de la langue en fonction du pays
+        let langPath;
+        if (country === 'fr' || country === 'be' || country === 'ch') {
+          langPath = 'fr-FR';
+        } else {
+          langPath = 'en-EN';
+        }
+
+        // 4. Sauvegarde et redirection
+        localStorage.setItem('preferredLang', langPath);
+        window.location.replace(`/${langPath}/`);
+      } catch (error) {
+        console.error('Error fetching location:', error);
+        window.location.replace('/en-EN/'); // fallback
+      }
+    }
+
+    redirectImmediately();
+  </script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      font-size: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+</body>
+</html>
