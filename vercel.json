@@ -9,13 +9,15 @@
     { "source": "/en-EN/", "destination": "/en.html" },
 
     { "source": "/fr-FR/:path*", "destination": "/:path*" },
-    { "source": "/en-EN/:path*", "destination": "/:path*" }
+    { "source": "/en-EN/:path*", "destination": "/:path*" },
+
+    { "source": "/fixes", "destination": "/fixes.html" },
+    { "source": "/fixes/", "destination": "/fixes.html" }
   ],
 
   "redirects": [
     { "source": "/fr", "destination": "/fr-FR/", "permanent": true },
     { "source": "/en", "destination": "/en-EN/", "permanent": true },
-
     { "source": "/", "destination": "/fr-FR/", "permanent": false }
   ],
 
