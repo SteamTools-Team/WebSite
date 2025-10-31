@@ -86,7 +86,10 @@ async function fetchFixes(force=false){
     console.log("⚡ Cache mis à jour");
   }catch(e){
     console.error(e);
-    document.getElementById("content").innerHTML=`<div class="empty">Erreur lors du chargement des fixes${e&&e.message?` : ${escapeHtml(String(e.message))}`:""}</div>`;
+    let msg = e;
+    if(e&&typeof e==='object') msg = e.message||e.error||e.toString();
+    if(typeof msg!=='string') { try{ msg = JSON.stringify(msg); }catch{ msg = 'Erreur inconnue'; } }
+    document.getElementById("content").innerHTML=`<div class="empty">Erreur lors du chargement des fixes : ${escapeHtml(String(msg))}</div>`;
   }
 }
 
