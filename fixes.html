@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fixes – Cache + SteamDB</title>
+<title>Online Fixes - SteamTools</title>
 <link rel="stylesheet" href="assets/style.css">
 <style>
 /* Ajustements spécifiques à la grille des fixes, en réutilisant les variables globales */
@@ -15,11 +15,12 @@
 .card{background:var(--accent-bg);border:1px solid var(--border-color);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:.25s ease;}
 .card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(140,122,230,.25),0 0 0 1px rgba(168,153,249,.2) inset;} 
 .card .info{padding:12px;}
-.file-row{display:flex;align-items:center;gap:14px;min-height:56px;}
+.file-row{display:flex;align-items:center;gap:4px;min-height:56px;}
+.file-text{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0;margin-left:-6px;}
 .file-icon{width:64px;height:64px;border:1px solid var(--border-color);background:linear-gradient(180deg,#1c1c2e,#151525);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);} 
 .file-icon img{width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(140,122,230,.35));} 
-.filename{flex:1;font-weight:800;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:1.02rem;}
-.size{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:.8rem;color:var(--text-primary);background:rgba(168,153,249,.08);border:1px solid var(--border-color);padding:5px 12px;border-radius:999px;}
+.filename{font-weight:800;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:1.02rem;}
+.size{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;color:var(--text-primary);background:rgba(168,153,249,.08);border:1px solid var(--border-color);padding:5px 12px;border-radius:999px;width:fit-content;align-self:flex-start;}
 .card:hover .file-icon{border-color:var(--violet-hover);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),0 0 0 3px rgba(168,153,249,.18);} 
 .card:hover .filename{color:var(--violet-hover);} 
 .empty{text-align:center;color:var(--text-secondary);margin-top:40px;}
@@ -27,10 +28,10 @@
 </head>
 <body>
 <div class="container">
-  <h1>🎮 Liste des Fixes</h1>
+  <h1>🎮 Fixes List</h1>
   <div id="controls">
-    <input id="search" type="search" placeholder="Rechercher un jeu...">
-    <button id="reload">Recharger</button>
+    <input id="search" type="search" placeholder="Search a game...">
+    <button id="reload">Reload</button>
   </div>
   <div id="content"></div>
 </div>
@@ -63,7 +64,7 @@ async function fetchViaProxies(url){
       }
     }catch(_){/* essaie le proxy suivant */}
   }
-  throw new Error("Impossible de récupérer la page source");
+  throw new Error("Unable to fetch source page");
 }
 
 async function fetchJsonViaProxies(url){
@@ -85,7 +86,7 @@ async function fetchJsonViaProxies(url){
       }
     }catch(_){/* essaie proxy suivant */}
   }
-  throw new Error('Impossible de récupérer le JSON via proxies');
+  throw new Error('Unable to fetch JSON via proxies');
 }
 
 function parseFixes(html){
@@ -123,15 +124,17 @@ function render(list){
   const q=document.getElementById("search").value.toLowerCase();
   const safeList=Array.isArray(list)?list:[];
   const items=safeList.filter(i=>!q||i.name.toLowerCase().includes(q));
-  if(!items.length)return document.getElementById("content").innerHTML=`<div class="empty">Aucun fichier trouvé.</div>`;
+  if(!items.length)return document.getElementById("content").innerHTML=`<div class="empty">No files found.</div>`;
   document.getElementById("content").innerHTML=`<div class="grid">`+items.map(it=>`
     <a href="${it.url}" target="_blank" class="card">
       <div class="info">
         <div class="file-row">
           <span class="file-icon"><img src="${DEFAULT_ICON}" alt="" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${DEFAULT_ICON}';"></span>
-          <span class="filename">${escapeHtml(it.name)}</span>
+          <span class="file-text">
+            <span class="filename">${escapeHtml(it.name)}</span>
+            <span class="size">${escapeHtml(it.size||"")}</span>
+          </span>
         </div>
-        <div class="size">${escapeHtml(it.size||"")}</div>
       </div>
     </a>`).join("")+`</div>`;
 }
@@ -144,26 +147,26 @@ async function fetchFixes(force=false){
       allFixes=Array.isArray(data.fixes)?data.fixes:[];
       // plus de récupération d'images
       render(allFixes);
-      console.log("💾 Cache chargé");
+      console.log("💾 Cache loaded");
       return;
     }
   }
-  document.getElementById("content").innerHTML=`<div class="empty">Chargement...</div>`;
+  document.getElementById("content").innerHTML=`<div class="empty">Loading...</div>`;
   try{
     const html = await fetchViaProxies(SOURCE_URL);
     let fixes = parseFixes(typeof html === 'string' ? html : String(html||''));
-    console.log(`📦 ${fixes.length} fixes trouvés`);
+    console.log(`📦 ${fixes.length} fixes found`);
     // plus de récupération d'images afin d'éviter les surcharges réseau
     allFixes = fixes;
     localStorage.setItem(CACHE_KEY,JSON.stringify({timestamp:Date.now(),fixes:allFixes}));
     render(allFixes);
-    console.log("⚡ Cache mis à jour");
+    console.log("⚡ Cache updated");
   }catch(e){
     console.error(e);
     let msg = e;
     if(e&&typeof e==='object') msg = e.message||e.error||e.toString();
-    if(typeof msg!=='string') { try{ msg = JSON.stringify(msg); }catch{ msg = 'Erreur inconnue'; } }
-    document.getElementById("content").innerHTML=`<div class="empty">Erreur lors du chargement des fixes : ${escapeHtml(String(msg))}</div>`;
+    if(typeof msg!=='string') { try{ msg = JSON.stringify(msg); }catch{ msg = 'Unknown error'; } }
+    document.getElementById("content").innerHTML=`<div class="empty">Error loading fixes: ${escapeHtml(String(msg))}</div>`;
   }
 }
 
