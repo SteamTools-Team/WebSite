@@ -1,5 +1,4 @@
 // /api/fetchFixes.js
-import fetch from "node-fetch";
 
 const SOURCE_URL = "https://generator.ryuu.lol/fixes";
 const PROXIES = [
@@ -28,11 +27,17 @@ function parseFixes(html) {
   const dom = new (require("jsdom").JSDOM)(html);
   const doc = dom.window.document;
   const anchors = [...doc.querySelectorAll("a.file-item, a[href$='.zip']")];
-  return anchors.map(a => ({
-    name: (a.querySelector(".file-name")?.textContent || a.textContent || "").trim(),
-    url: a.href || a.getAttribute("href"),
-    size: (a.querySelector(".file-size")?.textContent || "").trim(),
-  })).filter(f => f.name.toLowerCase().includes(".zip"));
+  return anchors.map(a => {
+    const name = (a.querySelector(".file-name")?.textContent || a.textContent || "").trim();
+    const href = a.getAttribute("href") || "";
+    let absoluteUrl = href;
+    try { absoluteUrl = new URL(href, SOURCE_URL).toString(); } catch {}
+    return {
+      name,
+      url: absoluteUrl,
+      size: (a.querySelector(".file-size")?.textContent || "").trim(),
+    };
+  }).filter(f => f.name.toLowerCase().includes(".zip"));
 }
 
 // Cherche une image SteamDB
@@ -50,7 +55,7 @@ async function getSteamImage(gameName) {
 }
 
 // -- handler -------------------------------------------------------------
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   try {
     const html = await tryFetchViaProxies(SOURCE_URL);
     let fixes = parseFixes(html);
