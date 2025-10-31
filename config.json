@@ -1,5 +1,7 @@
 {
-  "version": "9512",
+  "version": "9515",
   "websiteurl": "https://steamtools.ayka.dev/",
-  "discordurl": "https://discord.com/invite/GrSCq4DreV"
+  "discordurl": "https://discord.com/invite/GrSCq4DreV",
+  "gamesjsonurl": "https://raw.githubusercontent.com/SteamTools-Team/WebSite/main/data/games.json",
+  "databaseapiurl": "https://codeload.github.com/SteamAutoCracks/ManifestHub/zip/refs/heads/",
 }
