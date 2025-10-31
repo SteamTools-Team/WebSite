@@ -61,6 +61,28 @@ async function fetchViaProxies(url){
   throw new Error("Impossible de récupérer la page source");
 }
 
+async function fetchJsonViaProxies(url){
+  for(const make of PROXIES){
+    try{
+      const r = await fetch(make(url));
+      if(!r.ok) continue;
+      const type = r.headers.get('content-type')||'';
+      if(type.includes('json')){
+        const j = await r.json();
+        const contents = j && typeof j==='object' && 'contents' in j ? j.contents : j;
+        if(typeof contents === 'string'){
+          try{ return JSON.parse(contents); }catch{ continue; }
+        }
+        return contents;
+      } else {
+        const t = await r.text();
+        try{ return JSON.parse(t); }catch{ continue; }
+      }
+    }catch(_){/* essaie proxy suivant */}
+  }
+  throw new Error('Impossible de récupérer le JSON via proxies');
+}
+
 function parseFixes(html){
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
@@ -77,13 +99,17 @@ function parseFixes(html){
 
 async function getSteamImage(gameName){
   try{
-    const clean = encodeURIComponent((gameName||'').replace(/\.zip$/i,'').trim());
-    const r = await fetch(`https://steamdb.info/api/GetSearchSuggestions/?query=${clean}`);
-    if(!r.ok) return null;
-    const json = await r.json();
+    const name = (gameName||'').replace(/\.zip$/i,'').trim();
+    if(!name) return null;
+    if(!window.__imgCache) window.__imgCache = new Map();
+    if(window.__imgCache.has(name)) return window.__imgCache.get(name);
+    const clean = encodeURIComponent(name);
+    const json = await fetchJsonViaProxies(`https://steamdb.info/api/GetSearchSuggestions/?query=${clean}`);
     const first = json?.results?.[0];
     if(!first) return null;
-    return `https://cdn.cloudflare.steamstatic.com/steam/apps/${first.appid}/header.jpg`;
+    const header = `https://cdn.cloudflare.steamstatic.com/steam/apps/${first.appid}/header.jpg`;
+    window.__imgCache.set(name, header);
+    return header;
   }catch{ return null; }
 }
 
@@ -96,7 +122,7 @@ function render(list){
   if(!items.length)return document.getElementById("content").innerHTML=`<div class="empty">Aucun fichier trouvé.</div>`;
   document.getElementById("content").innerHTML=`<div class="grid">`+items.map(it=>`
     <a href="${it.url}" target="_blank" class="card">
-      <img src="${it.image||'/assets/fav.ico'}" alt="" onerror="this.onerror=null;this.src='/assets/fav.ico';this.style.objectFit='contain';this.style.padding='12px';this.style.height='140px';">
+      <img src="${it.image||'/assets/fav.ico'}" alt="" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/fav.ico';this.style.objectFit='contain';this.style.padding='12px';this.style.height='140px';">
       <div class="info">
         <div class="filename">${escapeHtml(it.name)}</div>
         <div class="size">${escapeHtml(it.size||"")}</div>
@@ -119,7 +145,17 @@ async function fetchFixes(force=false){
     const html = await fetchViaProxies(SOURCE_URL);
     let fixes = parseFixes(typeof html === 'string' ? html : String(html||''));
     const limited = fixes.slice(0,50);
-    await Promise.all(limited.map(async f=>{ f.image = await getSteamImage(f.name); }));
+    // Limiter de concurrence pour éviter les blocages réseau
+    const maxConcurrent = 8;
+    let index = 0;
+    async function worker(){
+      while(index < limited.length){
+        const i = index++;
+        const f = limited[i];
+        f.image = await getSteamImage(f.name);
+      }
+    }
+    await Promise.all(Array.from({length: Math.min(maxConcurrent, limited.length)}, worker));
     allFixes = fixes;
     localStorage.setItem(CACHE_KEY,JSON.stringify({timestamp:Date.now(),fixes:allFixes}));
     render(allFixes);
