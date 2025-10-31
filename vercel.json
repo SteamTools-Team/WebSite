@@ -12,7 +12,7 @@
     { "source": "/en-EN/:path*", "destination": "/:path*" },
 
     { "source": "/fixes", "destination": "/fixes.html" },
-    { "source": "/fixes/", "destination": "/fixes.html" }
+    { "source": "/fixes.html", "destination": "/fixes" }
   ],
 
   "redirects": [
