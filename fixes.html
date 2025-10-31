@@ -4,25 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fixes – Cache + SteamDB</title>
+<link rel="stylesheet" href="assets/style.css">
 <style>
-/* ton thème violet */
-:root {
-  --bg-main:#121212;--bg-container:#1e1e2f;--text-primary:#e0e0f0;--text-secondary:#a0a0b8;
-  --violet-primary:#8c7ae6;--violet-hover:#a899f9;--border-color:#2a2a45;--accent-bg:#29294b;
-}
-body{background:linear-gradient(135deg,var(--bg-main) 0%,#1a1a2e 100%);
-color:var(--text-primary);font-family:"Segoe UI",sans-serif;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:40px 20px;}
-.container{background:var(--bg-container);border:1px solid var(--border-color);border-radius:20px;max-width:900px;width:100%;padding:40px;box-shadow:0 20px 40px rgba(0,0,0,.4);}
-h1{font-size:2rem;text-align:center;background:linear-gradient(135deg,var(--text-primary),var(--violet-hover));
--webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+/* Ajustements spécifiques à la grille des fixes, en réutilisant les variables globales */
+.container{max-width:1100px;}
 #controls{display:flex;gap:10px;justify-content:center;margin:20px 0;}
-#search{flex:1;max-width:350px;padding:10px 14px;border-radius:10px;border:1px solid var(--border-color);background:var(--accent-bg);color:var(--text-primary);}
-#reload{padding:10px 18px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--violet-primary),var(--violet-hover));
-color:white;font-weight:600;cursor:pointer;}
+#search{flex:1;max-width:420px;padding:10px 14px;border-radius:10px;border:1px solid var(--border-color);background:var(--accent-bg);color:var(--text-primary);}
+#reload{padding:10px 18px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--violet-primary),var(--violet-hover));color:white;font-weight:600;cursor:pointer;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:20px;}
 .card{background:var(--accent-bg);border:1px solid var(--border-color);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:.3s;}
 .card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(140,122,230,.3);}
-.card img{width:100%;height:140px;object-fit:cover;filter:brightness(0.85);}
+.card img{width:100%;height:140px;object-fit:cover;filter:brightness(0.88);background:#151525;}
 .card .info{padding:12px;}
 .filename{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .size{font-size:.85rem;color:var(--text-secondary);margin-top:4px;}
@@ -104,7 +96,7 @@ function render(list){
   if(!items.length)return document.getElementById("content").innerHTML=`<div class="empty">Aucun fichier trouvé.</div>`;
   document.getElementById("content").innerHTML=`<div class="grid">`+items.map(it=>`
     <a href="${it.url}" target="_blank" class="card">
-      <img src="${it.image||'https://cdn-icons-png.flaticon.com/512/716/716784.png'}" alt="">
+      <img src="${it.image||'/assets/fav.ico'}" alt="" onerror="this.onerror=null;this.src='/assets/fav.ico';this.style.objectFit='contain';this.style.padding='12px';this.style.height='140px';">
       <div class="info">
         <div class="filename">${escapeHtml(it.name)}</div>
         <div class="size">${escapeHtml(it.size||"")}</div>
