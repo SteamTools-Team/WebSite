@@ -15,10 +15,10 @@
 .card{background:var(--accent-bg);border:1px solid var(--border-color);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:.25s ease;}
 .card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(140,122,230,.25),0 0 0 1px rgba(168,153,249,.2) inset;} 
 .card .info{padding:12px;}
-.file-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:40px;}
-.file-icon{width:40px;height:40px;border:1px solid var(--border-color);background:linear-gradient(180deg,#1c1c2e,#151525);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);} 
-.file-icon img{width:24px;height:24px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(140,122,230,.35));} 
-.filename{flex:1;font-weight:700;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.file-row{display:flex;align-items:center;gap:14px;min-height:56px;}
+.file-icon{width:64px;height:64px;border:1px solid var(--border-color);background:linear-gradient(180deg,#1c1c2e,#151525);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);} 
+.file-icon img{width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(140,122,230,.35));} 
+.filename{flex:1;font-weight:800;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:1.02rem;}
 .size{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:.8rem;color:var(--text-primary);background:rgba(168,153,249,.08);border:1px solid var(--border-color);padding:5px 12px;border-radius:999px;}
 .card:hover .file-icon{border-color:var(--violet-hover);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),0 0 0 3px rgba(168,153,249,.18);} 
 .card:hover .filename{color:var(--violet-hover);} 
@@ -128,8 +128,8 @@ function render(list){
     <a href="${it.url}" target="_blank" class="card">
       <div class="info">
         <div class="file-row">
-          <span class="filename">${escapeHtml(it.name)}</span>
           <span class="file-icon"><img src="${DEFAULT_ICON}" alt="" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${DEFAULT_ICON}';"></span>
+          <span class="filename">${escapeHtml(it.name)}</span>
         </div>
         <div class="size">${escapeHtml(it.size||"")}</div>
       </div>
