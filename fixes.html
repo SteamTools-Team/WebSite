@@ -13,8 +13,9 @@
 #reload{padding:10px 18px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--violet-primary),var(--violet-hover));color:white;font-weight:600;cursor:pointer;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:20px;}
 .card{background:var(--accent-bg);border:1px solid var(--border-color);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:.3s;}
-.card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(140,122,230,.3);}
-.card img{width:100%;height:140px;object-fit:cover;filter:brightness(0.88);background:#151525;}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(140,122,230,.3);} 
+.thumb{height:140px;display:flex;align-items:center;justify-content:center;background:#151525;border-bottom:1px solid var(--border-color);} 
+.thumb img{width:64px;height:64px;object-fit:contain;filter:brightness(0.96);} 
 .card .info{padding:12px;}
 .filename{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .size{font-size:.85rem;color:var(--text-secondary);margin-top:4px;}
@@ -35,6 +36,7 @@
 const SOURCE_URL = "https://generator.ryuu.lol/fixes";
 const CACHE_KEY = "fixes-cache";
 const CACHE_TTL = 3600 * 1000; // 1 heure
+const DEFAULT_ICON = "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4c1.svg"; // icône dossier
 
 let allFixes = [];
 
@@ -110,61 +112,7 @@ async function getAppIdFromSteamStore(name){
   }
 }
 
-async function getSteamImage(gameName){
-  try{
-    const name = (gameName||'').replace(/\.zip$/i,'').trim();
-    if(!name) return null;
-    if(!window.__imgCache) window.__imgCache = new Map();
-    if(window.__imgCache.has(name)) return window.__imgCache.get(name);
-    
-    // 1) Essai par recherche Store Steam (via r.jina.ai) pour obtenir un appid
-    const appidFromStore = await getAppIdFromSteamStore(name);
-    if(appidFromStore){
-      const header = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appidFromStore}/header.jpg`;
-      window.__imgCache.set(name, header);
-      console.log(`✓ Image trouvée (Store) pour "${name}": ${header}`);
-      return header;
-    }
-
-    // Essayer d'abord avec SteamGridDB (API plus ouverte)
-    try{
-      const clean = encodeURIComponent(name);
-      const sgdbUrl = `https://www.steamgriddb.com/api/v2/search/autocomplete/${clean}`;
-      const sgdbRes = await fetch(sgdbUrl);
-      if(sgdbRes.ok){
-        const sgdbData = await sgdbRes.json();
-        if(sgdbData.success && sgdbData.data && sgdbData.data.length > 0){
-          const firstGame = sgdbData.data[0];
-          if(firstGame.appid){
-            const header = `https://cdn.cloudflare.steamstatic.com/steam/apps/${firstGame.appid}/header.jpg`;
-            window.__imgCache.set(name, header);
-            console.log(`✓ Image trouvée pour "${name}": ${header}`);
-            return header;
-          }
-        }
-      }
-    }catch(e){ console.log(`SteamGridDB échoué pour "${name}"`, e); }
-    
-    // Fallback: SteamDB via proxy
-    try{
-      const clean = encodeURIComponent(name);
-      const json = await fetchJsonViaProxies(`https://steamdb.info/api/GetSearchSuggestions/?query=${clean}`);
-      const first = json?.results?.[0];
-      if(first && first.appid){
-        const header = `https://cdn.cloudflare.steamstatic.com/steam/apps/${first.appid}/header.jpg`;
-        window.__imgCache.set(name, header);
-        console.log(`✓ Image trouvée (SteamDB) pour "${name}": ${header}`);
-        return header;
-      }
-    }catch(e){ console.log(`SteamDB échoué pour "${name}"`, e); }
-    
-    console.log(`✗ Aucune image trouvée pour "${name}"`);
-    return null;
-  }catch(e){ 
-    console.error(`Erreur getSteamImage pour "${gameName}":`, e);
-    return null; 
-  }
-}
+function getSteamImage(){ return null; }
 
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
 
@@ -175,7 +123,9 @@ function render(list){
   if(!items.length)return document.getElementById("content").innerHTML=`<div class="empty">Aucun fichier trouvé.</div>`;
   document.getElementById("content").innerHTML=`<div class="grid">`+items.map(it=>`
     <a href="${it.url}" target="_blank" class="card">
-      <img src="${it.image||'/assets/fav.ico'}" alt="" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/fav.ico';this.style.objectFit='contain';this.style.padding='12px';this.style.height='140px';">
+      <div class="thumb">
+        <img src="${it.image||DEFAULT_ICON}" alt="" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${DEFAULT_ICON}';">
+      </div>
       <div class="info">
         <div class="filename">${escapeHtml(it.name)}</div>
         <div class="size">${escapeHtml(it.size||"")}</div>
@@ -189,23 +139,7 @@ async function fetchFixes(force=false){
     const data=JSON.parse(cache);
     if(Date.now()-data.timestamp<CACHE_TTL){
       allFixes=Array.isArray(data.fixes)?data.fixes:[];
-      // Mettre à jour les images même depuis le cache si elles manquent
-      const needsImages = allFixes.filter(f => !f.image || f.image === '/assets/fav.ico');
-      if(needsImages.length > 0){
-        console.log(`🔄 Mise à jour des images pour ${needsImages.length} jeux...`);
-        const maxConcurrent = 5;
-        let index = 0;
-        async function worker(){
-          while(index < needsImages.length){
-            const i = index++;
-            const f = needsImages[i];
-            const img = await getSteamImage(f.name);
-            if(img) f.image = img;
-          }
-        }
-        await Promise.all(Array.from({length: Math.min(maxConcurrent, needsImages.length)}, worker));
-        localStorage.setItem(CACHE_KEY,JSON.stringify({timestamp:Date.now(),fixes:allFixes}));
-      }
+      // plus de récupération d'images
       render(allFixes);
       console.log("💾 Cache chargé");
       return;
@@ -216,20 +150,7 @@ async function fetchFixes(force=false){
     const html = await fetchViaProxies(SOURCE_URL);
     let fixes = parseFixes(typeof html === 'string' ? html : String(html||''));
     console.log(`📦 ${fixes.length} fixes trouvés`);
-    const limited = fixes.slice(0,50);
-    console.log(`🖼️ Récupération des images pour ${limited.length} jeux...`);
-    // Limiter de concurrence pour éviter les blocages réseau
-    const maxConcurrent = 5;
-    let index = 0;
-    async function worker(){
-      while(index < limited.length){
-        const i = index++;
-        const f = limited[i];
-        const img = await getSteamImage(f.name);
-        if(img) f.image = img;
-      }
-    }
-    await Promise.all(Array.from({length: Math.min(maxConcurrent, limited.length)}, worker));
+    // plus de récupération d'images afin d'éviter les surcharges réseau
     allFixes = fixes;
     localStorage.setItem(CACHE_KEY,JSON.stringify({timestamp:Date.now(),fixes:allFixes}));
     render(allFixes);
