@@ -9,9 +9,6 @@
     { "source": "/fr-FR/:path*", "destination": "/:path*" },
     { "source": "/en-EN/:path*", "destination": "/:path*" }
   ],
-  "functions": {
-    "api/*.js": { "runtime": "nodejs18.x" }
-  },
   "redirects": [
     { "source": "/fr", "destination": "/fr-FR/", "permanent": true },
     { "source": "/en", "destination": "/en-EN/", "permanent": true },
